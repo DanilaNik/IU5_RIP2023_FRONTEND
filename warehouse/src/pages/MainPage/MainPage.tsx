@@ -1,154 +1,130 @@
 import * as React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Header from 'components/Header';
-import OneCard from 'components/Card';
+import Header from '../../components/Header';
+import OneCard from '../../components/Card';
 import styles from './MainPage.module.scss'
 import { useEffect, useState } from 'react';
 import { ChangeEvent } from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { Link } from 'react-router-dom';
-import SliderFilter from 'components/Slider';
-import BreadCrumbs from 'components/BreadCrumbs';
+//import Dropdown from 'react-bootstrap/Dropdown';
+// import { Link } from 'react-router-dom';
+// import SliderFilter from '../../components/Slider';
+import BreadCrumbs from '../../components/BreadCrumbs';
+import SearchIcon from '../../components/Icons/SearchIcon'
+import { mockItems } from '../../../consts';
 
-import { categories, mockSubscriptions } from '../../../consts';
-
-export type Subscription = {
-    id: number,
-    title: string,
-    price: number,
-    info: string,
-    src: string,
-    idCategory: number,
-    categoryTitle: string,
-    status: string
+export type Item = {
+    id: number;
+    name: string;
+    image_url: string;
+    quantity: number;
+    height: number;
+    width: number;
+    depth: number;
+    barcode: number;
 }
 
-export type ReceivedSubscriptionData = {
-    id: number,
-    title: string,
-    price: number,
-    info: string,
-    src: string,
-    id_category: number,
-    category: string,
+export type ReceivedItemData = {
+    id: number;
+    name: string;
+    image_url: string;
+    status: string;
+    quantity: number;
+    height: number;
+    width: number;
+    depth: number;
+    barcode: number;
 }
 
 
 
 const MainPage: React.FC = () => {
-    const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-    const [categoryValue, setCategoryValue] = useState<string>(categories[0].value)
+    const [items, setItems] = useState<Item[]>([]);
+    //const [categoryValue, setCategoryValue] = useState<string>(categories[0].value)
     const [titleValue, setTitleValue] = useState<string>('')
-    const [priceValue, setPriceValue] = useState<number>()
-    const [sliderValues, setSliderValues] = useState([0, 10000]);
+    // const [priceValue, setPriceValue] = useState<number>()
+    // const [sliderValues, setSliderValues] = useState([0, 10000]);
     const linksMap = new Map<string, string>([
-        ['Абонементы', '/']
+        ['Комплектующие', '/']
     ]);
 
-    const fetchSubscriptions = async () => {
-        let url = 'http://127.0.0.1:8000/subscriptions'
+    const fetchItems = async () => {
+        let url = 'http://172.20.10.6:7070/items'
         if (titleValue) {
-            url += `?title=${titleValue}`
-            if (categoryValue && categoryValue !== 'Все категории') {
-                url += `&category=${categoryValue}`
-            }
-            if (priceValue) {
-                url += `&max_price=${priceValue}`
-            }
-        } else if(categoryValue && categoryValue !== 'Все категории') {
-            url += `?category=${categoryValue}`
-            if (priceValue) {
-                url += `&max_price=${priceValue}`
-            }
-        } else if (priceValue){
-            url += `?max_price=${priceValue}`
+            url += `?search=${titleValue}`
+            console.log(titleValue, url)
         }
         try {
             const response = await fetch(url, {
                 credentials: 'include'
-            });
-            const jsonData = await response.json();
-            // const newRecipesArr = jsonData.subscriptions.map((raw: ReceivedSubscriptionData) => ({
-            const newRecipesArr = jsonData.map((raw: ReceivedSubscriptionData) => ({
+             });
+             const data = await response.json();
+             const itemsData = data.items; // Извлечение массива items из объекта
+             const newRecipesArr = itemsData.map((raw: ReceivedItemData) => ({
                 id: raw.id,
-                title: raw.title,
-                price: raw.price,
-                info: raw.info,
-                src: raw.src,
-                categoryTitle: raw.category
-            }));
-        
-            setSubscriptions(newRecipesArr);
+                name: raw.name,
+                image_url: raw.image_url,
+                status: raw.status,
+                quantity: raw.quantity,
+                height: raw.height,
+                width: raw.width,
+                depth: raw.depth,
+                barcode: raw.barcode
+             }));
+             setItems(newRecipesArr);
         }
         catch {
             console.log('запрос не прошел !')
-            if (categoryValue && categoryValue !== 'Все категории') {
-                const filteredArray = mockSubscriptions.filter(mockSubscription => mockSubscription.categoryTitle === categoryValue);
-                setSubscriptions(filteredArray);
-            } else if (titleValue) {
-                const filteredArray = mockSubscriptions.filter(mockSubscription => mockSubscription.title.includes(titleValue));
-                setSubscriptions(filteredArray);
-            } else if (priceValue) {
-                const filteredArray = mockSubscriptions.filter(mockSubscription => mockSubscription.price <= priceValue);
-                setSubscriptions(filteredArray);
+            if (titleValue) {
+                const filteredArray = mockItems.filter(mockItem => mockItem.name.includes(titleValue));
+                setItems(filteredArray);
             }
-            
             else {
-                setSubscriptions(mockSubscriptions);
+                setItems(mockItems);
             }
         }
         
     };
     useEffect(() => {
-        fetchSubscriptions();
+        fetchItems();
     }, []);
 
     const handleSearchButtonClick = () => {
-        fetchSubscriptions();
+        fetchItems();
     }
 
     const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
         setTitleValue(event.target.value);
     };
 
-    const handlePriceValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setPriceValue(Number(event.target.value));
-    };
-
-    const handleSliderChange = (values: number[]) => {
-        setSliderValues(values);
-    };
+    // const handlePriceValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    //     setPriceValue(Number(event.target.value));
+    // };
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
     };
 
-    const handleCategorySelect = (eventKey: string | null) => {
-        if (eventKey) {
-          const selectedCategory = categories.find(category => category.key === eventKey);
-          if (selectedCategory) {
-            setCategoryValue(selectedCategory.value);
-          }
-        }
-    };
+    // const handleCategorySelect = (eventKey: string | null) => {
+    //     if (eventKey) {
+    //       const selectedCategory = categories.find(category => category.key === eventKey);
+    //       if (selectedCategory) {
+    //         setCategoryValue(selectedCategory.value);
+    //       }
+    //     }
+    // };
 
     return (
         <div className={styles['main__page']}>
             <Header/>
             <div className={styles['content']}>
                 <BreadCrumbs links={linksMap}></BreadCrumbs>
-
-                <h1 className="mb-4" style={{fontSize: 30}}>
-                    Здесь вы можете подобрать выбрать для себя подходящий абонемент на какой-либо транспорт
-                </h1>
-
                 <Form className="d-flex gap-3" onSubmit={handleFormSubmit}>
                     <div className='w-100'>
                         <Form.Group style={{height: 60}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} value={titleValue} onChange={handleTitleValueChange} type="text" placeholder="Введите название абонемента..." />
+                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} value={titleValue} onChange={handleTitleValueChange} type="text" placeholder="Введите название ..." />
                         </Form.Group>
-                        <div style={{display: 'flex', gap: 10, width: '100%', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+                        {/* <div style={{display: 'flex', gap: 10, width: '100%', justifyContent: 'space-between', alignItems: 'flex-end'}}>
                             <Dropdown style={{minWidth: '40%'}} onSelect={handleCategorySelect}>
                                 <Dropdown.Toggle
                                     style={{
@@ -176,22 +152,18 @@ const MainPage: React.FC = () => {
                                     ))}
                                 </Dropdown.Menu>
                             </Dropdown>
-                            <SliderFilter
-                                onChangeValues={handleSliderChange}
-                                minimum={0}
-                                maximum={10000}
-                                title="Диапазон цен:"
-                            />
-                        </div>
+                        </div> */}
                         
                     </div>
                     
-                    <Button style={{backgroundColor: "#2787F5", padding: "15px 40px", borderColor: "#000", fontSize: 18, height: 60}} onClick={() => handleSearchButtonClick()}>Найти</Button>
+                    <Button style={{backgroundColor: "#FF9800", color: '#FFF', padding: "15px 40px", borderColor: "#000", fontSize: 18, height: 60}} onClick={() => handleSearchButtonClick()}>
+                        <SearchIcon />
+                    </Button>
                 </Form>
 
                 <div className={styles["content__cards"]}>
-                    {subscriptions.map((subscription: Subscription) => (
-                        <OneCard id={subscription.id} src={subscription.src} onButtonClick={() => console.log('add to application')} title={subscription.title} category={subscription.categoryTitle} price={Number(subscription.price)}></OneCard>
+                    {items.map((item: Item) => (
+                        <OneCard id={item.id} image_url={item.image_url} onButtonClick={() => console.log('add to application')} name={item.name} barcode={Number(item.barcode)}></OneCard>
                     ))}
                 </div>
             </div>

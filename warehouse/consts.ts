@@ -1,87 +1,42 @@
-export const categories = [
+export const mockItems = [
     {
-        key: "all",
-        value: "Все категории"
+        "id": 1,
+        "name": "Пластиковые корпуса",
+        "image_url": "https://www.centronix.ru/public/img/centronix/adapt_optima/2.jpg",
+        "quantity": 200,
+        "height": 30,
+        "width": 30,
+        "depth": 50,
+        "barcode": 1111111111111
     },
     {
-        key: "scooter",
-        value: "Самокаты"
+        "id": 2,
+        "name": "Металлические элементы",
+        "image_url": "https://www.pvlt.ru/files/%D1%81%D1%82%D0%B0%D1%82%D1%8C%D0%B8/img_58541-1024x683.jpg",
+        "quantity": 150,
+        "height": 10,
+        "width": 100,
+        "depth": 10,
+        "barcode": 2222222222222
     },
     {
-        key: "mcd",
-        value: "МЦД"
+        "id": 3,
+        "name": "Кабельная продукция",
+        "image_url": "https://www.diada-electro.ru/images/develop-img.jpg",
+        "quantity": 300,
+        "height": 5,
+        "width": 5,
+        "depth": 200,
+        "barcode": 3333333333333
     },
     {
-        key: "underground",
-        value: "Метро / МЦК"
+        "id": 4,
+        "name": "Пластиковые стойки",
+        "image_url": "https://www.sklad-21.ru/upload/shop_3/2/9/8/item_2984/shop_items_catalog_image2984.jpg",
+        "quantity": 180,
+        "height": 20,
+        "width": 15,
+        "depth": 70,
+        "barcode": 4444444444444
     },
-    {
-        key: "bike",
-        value: "Велосипеды"
-    },
-]
-
-
-
-export const mockSubscriptions = [
-    {
-        id: 5,
-        categoryTitle: "Велосипеды",
-        title: "30 дней",
-        price: 500,
-        info: "Дополнительная информация об абонементе",
-        src: "https://velobaza.ru/upload/medialibrary/6fe/gornii_velosiped_3.jpg",
-        status: "enabled",
-        idCategory: 1
-    },
-    {
-        id: 7,
-        categoryTitle: "Велосипеды",
-        title: "365 дней",
-        price: 4000,
-        info: "Дополнительная информация об абонементе",
-        src: "https://velobaza.ru/upload/medialibrary/6fe/gornii_velosiped_3.jpg",
-        status: "enabled",
-        idCategory: 1
-    },
-    {
-        id: 8,
-        categoryTitle: "Самокаты",
-        title: "Бесплатный старт 30 дней",
-        price: 400,
-        info: "Дополнительная информация об абонементе",
-        src: "https://girosmart.ru/image/catalog/sw_photos/1231/elektrosamokat-kugoo-m4-pro-chernyy-17ah-new-2020-1.jpg",
-        status: "enabled",
-        idCategory: 1
-    },
-    {
-        id: 1,
-        categoryTitle: "МЦД",
-        title: "5 поездок",
-        price: 1000,
-        info: "информация про мцд",
-        src: "https://myskillsconnect.com/uploads/posts/2023-06/1686528414_myskillsconnect-com-p-mtsd-poezda-vnutri-foto-26.jpg",
-        status: "enabled",
-        idCategory: 1
-    },
-    {
-        id: 3,
-        categoryTitle: "МЦД",
-        title: "15 поездок",
-        price: 1500,
-        info: "информация про мцд",
-        src: "https://myskillsconnect.com/uploads/posts/2023-06/1686528414_myskillsconnect-com-p-mtsd-poezda-vnutri-foto-26.jpg",
-        status: "enabled",
-        idCategory: 1
-    },
-    {
-        id: 4,
-        categoryTitle: "МЦД",
-        title: "30 поездок",
-        price: 2500,
-        info: "информация про мцд",
-        src: "https://myskillsconnect.com/uploads/posts/2023-06/1686528414_myskillsconnect-com-p-mtsd-poezda-vnutri-foto-26.jpg",
-        status: "enabled",
-        idCategory: 1
-    }
 ]

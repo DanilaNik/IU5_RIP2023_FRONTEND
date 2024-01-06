@@ -1,20 +1,18 @@
 .breadcrumbs {
     margin-bottom: 40px;
-    font-size: 20px;
+    font-size: 16px;
 
     &__item {
-
+        display: inline-flex;
+        align-items: center;
 
         &-link {
             text-decoration: none;
-            color: #3D348B;
+            color: #B0BEC5; /* Inactive items color */
         }
 
-        &-last {
-            background-color: #2787F5;
-            color: #fff;
-            padding: 10px;
-            border-radius: 10px;
+        &-text-active {
+            color: #000; /* Black color for active item */
         }
 
         &-icon {

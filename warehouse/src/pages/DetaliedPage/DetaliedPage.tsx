@@ -1,33 +1,36 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Header from 'components/Header';
-import BreadCrumbs from 'components/BreadCrumbs';
+// import { Link } from 'react-router-dom';
+// import Button from 'react-bootstrap/Button';
+import Header from '../../components/Header';
+import BreadCrumbs from '../../components/BreadCrumbs';
 import Image from "react-bootstrap/Image"
 import styles from './DetaliedPage.module.scss'
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { mockSubscriptions } from '../../../consts'
+import { mockItems } from '../../../consts'
 
-type Subscription = {
+type Item = {
     id: number;
-    title: string;
-    price: number;
-    info: string;
-    src: string;
-    categoryTitle: string;
+    name: string;
+    image_url: string;
+    quantity: number;
+    height: number;
+    width: number;
+    depth: number;
+    barcode: number;
 };
 
-export type ReceivedSubscriptionData = {
-    id: number,
-    title: string,
-    price: string,
-    info: string,
-    src: string,
-    id_category: number,
-    category: string,
-    status: string
+export type ReceivedItemData = {
+    id: number;
+    name: string;
+    image_url: string;
+    status: string;
+    quantity: number;
+    height: number;
+    width: number;
+    depth: number;
+    barcode: number;
 }
 
 
@@ -35,43 +38,41 @@ const MainPage: React.FC = () => {
     const params = useParams();
     const id = params.id === undefined ? '' : params.id;
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
-        new Map<string, string>([['Абонементы', '/']])
+        new Map<string, string>([['Комплектующие', '/']])
     );
 
-    const [subscription, setSubscription] = useState<Subscription>();
+    const [item, setItem] = useState<Item>();
     // const linksMap = new Map<string, string>([
     //     ['Абонементы', '/']
     // ]);
     let currentUrl = '/'
 
-    const fetchSubscription = async () => {
+    const fetchItem = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/subscriptions/${id}`);
-            const jsonData = await response.json();
-            setSubscription({
-                id: Number(jsonData.id),
-                title: jsonData.title,
-                price: jsonData.price,
-                info: jsonData.info,
-                src: jsonData.src,
-                categoryTitle: jsonData.category
+            const response = await fetch(`http://172.20.10.6:7070/items/${id}`);
+            const data = await response.json();
+            const itemData = data.item; // Извлечение объекта item из объекта
+            setItem({
+                id: Number(itemData.id),
+                name: itemData.name,
+                image_url: itemData.image_url,
+                quantity: itemData.quantity,
+                height: itemData.height,
+                width: itemData.width,
+                depth: itemData.depth,
+                barcode: itemData.barcode
             })
-
+     
             const newLinksMap = new Map<string, string>(linksMap); // Копирование старого Map
-            newLinksMap.set(jsonData.title, '/subscription/' + id);
+            newLinksMap.set(itemData.name, '/items/' + id);
             setLinksMap(newLinksMap)
         } catch {
-            const subscription = mockSubscriptions.find(item => item.id === Number(id));
-            setSubscription(subscription)
+            const item = mockItems.find(item => item.id === Number(id));
+            setItem(item)
         }
-        
-        currentUrl += 'subscription/' + id
-        // if (subscription !== undefined) {
-            
-        // }
-    };
+     };     
     useEffect(() => {
-        fetchSubscription();
+        fetchItem();
         // console.log(currentUrl)
     }, []);
 
@@ -83,15 +84,16 @@ const MainPage: React.FC = () => {
                 <div className='d-flex gap-5'>
                     <Image
                         style={{ width: '45%' }}
-                        src={subscription?.src ? subscription?.src : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg"}
+                        src={item?.image_url ? item?.image_url : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg"}
                         rounded
                     />
                     <div style={{width: '55%'}}>
-                            <h1 className='mb-4' style={{fontSize: 30}}>{subscription?.categoryTitle} "{subscription?.title}"</h1>
-                        <h4>Цена на данный абонемент:  <strong>{subscription?.price}р.</strong></h4>
+                            <h1 className='mb-4' style={{fontSize: 30}}>{item?.name}</h1>
                         <div className={styles.content__description}>
                             <h4>Описание:</h4>
-                            <p>{subscription?.info}</p>
+                            <p>Количество: {item?.quantity}</p>
+                            <p>Код: {item?.barcode}</p>
+                            <p>Размеры: {item?.height}x{item?.width}x{item?.depth}</p>
                         </div>
                     </div>
                 </div>

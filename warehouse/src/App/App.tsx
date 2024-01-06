@@ -1,9 +1,9 @@
 import { HashRouter, Routes, Route } from 'react-router-dom'
 // import styles from './App.module.scss'
-import MainPage from 'pages/MainPage';
-import DetaliedPage from 'pages/DetaliedPage';
-import RegistrationPage from 'pages/RegistrationPage';
-import LoginPage from 'pages/LoginPage';
+import MainPage from '../pages/MainPage';
+import DetaliedPage from '../pages/DetaliedPage';
+import RegistrationPage from '../pages/RegistrationPage';
+import LoginPage from '../pages/LoginPage';
 
 function App() {
     return (
@@ -12,7 +12,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<MainPage />} />
 
-                <Route path="/subscription">
+                <Route path="/items">
                   <Route path=":id" element={<DetaliedPage />} />
                 </Route>
 
