@@ -17,9 +17,9 @@ const OneCard: React.FC<CardProps> = ({id, name, barcode, image_url, onButtonCli
   return (
     <Card>
       <Link to={`/items/${id}`} style={{ display: 'block', textDecoration: 'none' }}>
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', overflow: 'hidden'}}>
           <Image
-            style={{ cursor: 'pointer', width: '100%', height: 'auto' }}
+            style={{ cursor: 'pointer', width: '100%', height: '200px', objectFit: 'cover', objectPosition: '50% 50%' }}
             onClick={onImageClick}
             src={image_url ? image_url : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg"}
             rounded

@@ -45,7 +45,7 @@ const MainPage: React.FC = () => {
     // const linksMap = new Map<string, string>([
     //     ['Абонементы', '/']
     // ]);
-    let currentUrl = '/'
+    //let currentUrl = '/'
 
     const fetchItem = async () => {
         try {
