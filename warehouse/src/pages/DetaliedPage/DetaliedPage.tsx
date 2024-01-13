@@ -1,6 +1,4 @@
 import * as React from 'react';
-// import { Link } from 'react-router-dom';
-// import Button from 'react-bootstrap/Button';
 import Header from '../../components/Header';
 import BreadCrumbs from '../../components/BreadCrumbs';
 import Image from "react-bootstrap/Image"
@@ -42,11 +40,7 @@ const MainPage: React.FC = () => {
     );
 
     const [item, setItem] = useState<Item>();
-    // const linksMap = new Map<string, string>([
-    //     ['Абонементы', '/']
-    // ]);
-    //let currentUrl = '/'
-
+//доп информация
     const fetchItem = async () => {
         try {
             const response = await fetch(`http://172.20.10.6:7070/items/${id}`);
