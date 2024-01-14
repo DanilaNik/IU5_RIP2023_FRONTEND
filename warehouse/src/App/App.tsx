@@ -3,11 +3,34 @@ import MainPage from '../pages/MainPage';
 import DetaliedPage from '../pages/DetaliedPage';
 import RegistrationPage from '../pages/RegistrationPage';
 import LoginPage from '../pages/LoginPage';
+import { useEffect } from 'react';
+import { api } from '../api';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState, store } from '../components/state/state';
+import {  setName, setEmail, setId, setLogin, setRole } from '../components/state/user/user';
+import OrderPage from '../pages/Order/Order';
+import OrderListPage from '../pages/OrderList/OrderList';
+
 
 function App() {
+  const login = useSelector((state: RootState) => state.user.login)
+  const dispatch = useDispatch<AppDispatch>()
+  const validate = async() => {
+    const {data} = await api.validate.validateCreate({
+    withCredentials: true,
+  })
+  
+  dispatch(setLogin(String(data.login)))
+  console.log("got dispatch login " +  login)
+  console.log(data)
+  }
+    useEffect(()=> {
+      validate()
+      console.log("rendered")
+    }, [])
     return (
       <div className='app'>
-        <HashRouter>
+        {/* <HashRouter> */}
             <Routes>
                 <Route path="/" element={<MainPage />} />
 
@@ -15,10 +38,17 @@ function App() {
                   <Route path=":id" element={<DetaliedPage />} />
                 </Route>
 
+              
+                <Route path="/orders/:id" element={<OrderPage />} />
+
+                <Route path="/orders" element={<OrderListPage />} />
+
+
                 <Route path='/registration' element={<RegistrationPage/>}></Route>
                 <Route path='/login' element={<LoginPage/>}></Route>
+
             </Routes>
-        </HashRouter>
+        {/* </HashRouter> */}
       </div>
     );
   }

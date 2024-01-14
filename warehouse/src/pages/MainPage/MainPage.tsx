@@ -9,12 +9,17 @@ import { ChangeEvent } from 'react';
 import BreadCrumbs from '../../components/BreadCrumbs';
 import SearchIcon from '../../components/Icons/SearchIcon'
 import { mockItems } from '../../../consts';
+import { api } from '../../api';
+import { setMaterial, setOrderID, setTitle } from '../../components/state/user/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../components/state/state';
 
 export type Item = {
     id: number;
     name: string;
     image_url: string;
     quantity: number;
+    material: string;
     height: number;
     width: number;
     depth: number;
@@ -27,6 +32,7 @@ export type ReceivedItemData = {
     image_url: string;
     status: string;
     quantity: number;
+    material: string;
     height: number;
     width: number;
     depth: number;
@@ -36,60 +42,59 @@ export type ReceivedItemData = {
 
 
 const MainPage: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const title = useSelector((state: RootState) => state.user.title)
+    const material = useSelector((state: RootState) => state.user.material)
+    
     const [items, setItems] = useState<Item[]>([]);
-    const [titleValue, setTitleValue] = useState<string>('')
     const linksMap = new Map<string, string>([
         ['Комплектующие', '/']
     ]);
 //запрос на главной 
-    const fetchItems = async () => {
-        let url = 'http://172.20.10.6:7070/items'
-        if (titleValue) {
-            url += `?search=${titleValue}`
-            console.log(titleValue, url)
-        }
+    const getItems = async () => {
         try {
-            const response = await fetch(url, {
-                credentials: 'include'
-             });
-             const data = await response.json();
-             const itemsData = data.items; // Извлечение массива items из объекта
-             const newRecipesArr = itemsData.map((raw: ReceivedItemData) => ({
+            const { data } = await api.items.itemsList({
+                title: title,
+                material: material,
+            },{
+                withCredentials: true
+            });
+            const itemsData = data.items;
+            const newItemsArr = itemsData.map((raw: ReceivedItemData) => ({
                 id: raw.id,
                 name: raw.name,
                 image_url: raw.image_url,
                 status: raw.status,
                 quantity: raw.quantity,
+                material: raw.material,
                 height: raw.height,
                 width: raw.width,
                 depth: raw.depth,
                 barcode: raw.barcode
-             }));
-             setItems(newRecipesArr);
-        }
-        catch {
-            console.log('запрос не прошел !')
-            if (titleValue) {
-                const filteredArray = mockItems.filter(mockItem => mockItem.name.includes(titleValue));
+            }));
+            setItems(newItemsArr);
+            dispatch(setOrderID(data.orderID))
+        } catch (error) {
+            console.log('запрос не прошел !', error);
+            if (title || material) {
+                const filteredArray = mockItems.filter(mockItem => (mockItem.name.includes(titleValue) && mockItem.material.includes(materialValue)));
                 setItems(filteredArray);
-            }
-            else {
+            } else {
                 setItems(mockItems);
             }
         }
-        
     };
     useEffect(() => {
-        fetchItems();
+        getItems();
     }, []);
 
     const handleSearchButtonClick = () => {
-        fetchItems();
+        getItems();
     }
 
-    const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setTitleValue(event.target.value);
-    };
+    // const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    //     setTitleValue(event.target.value);
+    // };
 
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -105,7 +110,20 @@ const MainPage: React.FC = () => {
                 <Form className="d-flex gap-3" onSubmit={handleFormSubmit}>
                     <div className='w-100'>
                         <Form.Group style={{height: 60}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} value={titleValue} onChange={handleTitleValueChange} type="text" placeholder="Введите название ..." />
+                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} value={title} onChange={e => {dispatch(setTitle(e.target.value))}} type="text" placeholder="Введите название ..." />
+                            <Form.Select
+                                value={material}
+                                onChange={e => {
+                                // setSelectedOption(e.target.value);
+                                dispatch(setMaterial(e.target.value))
+                                }}
+                                aria-label="Выберите материал" className='m-3' id='material'>
+                                <option value="">Выберите материал</option>
+                                <option value="металл">металл</option>
+                                <option value="композит">композит</option>
+                                <option value="резина">резина</option>
+                                <option value="пластмасса">пластмасса</option>
+                            </Form.Select>
                         </Form.Group>
                         
                     </div>
@@ -117,7 +135,7 @@ const MainPage: React.FC = () => {
 
                 <div className={styles["content__cards"]}>
                     {items.map((item: Item) => (
-                        <OneCard id={item.id} image_url={item.image_url} onButtonClick={() => console.log('add to application')} name={item.name} barcode={Number(item.barcode)}></OneCard>
+                        <OneCard callback={getItems} id={item.id} image_url={item.image_url} onButtonClick={() => console.log('add to application')} name={item.name} barcode={Number(item.barcode)}></OneCard>
                     ))}
                 </div>
             </div>

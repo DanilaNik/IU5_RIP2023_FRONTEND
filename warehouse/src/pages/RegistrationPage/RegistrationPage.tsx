@@ -1,13 +1,34 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import Header from '../../components/Header';
 import styles from './RegistrationPage.module.scss'
+import { useState } from 'react';
+import { api } from '../../api';
 
 const MainPage: React.FC = () => {
+    const navigate = useNavigate()
+    const [login, setLogin] = useState("")
+    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("")
+    const [userName, setUserName] = useState("")
 
-    const handleFormSubmit = () => {
+    const handleFormSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const {data} = await api.signup.signupCreate({
+                login: login,
+                userName: userName,
+                email: email,
+                password: password,
+            }, {})
+            alert("Вы зарегестрировались")
+            navigate("/login")
+        } catch (error) {
+            alert("Ошибка на стороне сервера. Повторите позже")
+        }
+
         console.log('Form was submitted')
     }
 
@@ -22,22 +43,22 @@ const MainPage: React.FC = () => {
                     <h3 className={styles.content__title}>Регистрация</h3>
                     <div className={styles.form__item}>
                         <Form.Group style={{height: 50}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="email" placeholder="E-mail..." />
+                            <Form.Control onChange={(e) => {setLogin(e.target.value)}} style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="text" placeholder="Логин" required/>
                         </Form.Group>
                     </div>
                     <div className={styles.form__item}>
                         <Form.Group style={{height: 50}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="text" placeholder="ФИО..." />
+                            <Form.Control  onChange={(e) => {setUserName(e.target.value)}} style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="text" placeholder="ФИО..." required/>
                         </Form.Group>
                     </div>
                     <div className={styles.form__item}>
                         <Form.Group style={{height: 50}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="tel" placeholder="Номер телефона..." />
+                            <Form.Control onChange={(e) => {setEmail(e.target.value)}} style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="email" placeholder="Email..." required/>
                         </Form.Group>
                     </div>
                     <div className={styles.form__item}>
                         <Form.Group style={{height: 50}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="password" placeholder="Пароль..." />
+                            <Form.Control onChange={(e) => {setPassword(e.target.value)}} style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="password" placeholder="Пароль..." required/>
                         </Form.Group>
                     </div>
                     

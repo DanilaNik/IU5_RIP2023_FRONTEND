@@ -7,12 +7,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { mockItems } from '../../../consts'
+import { api } from '../../api';
 
 type Item = {
     id: number;
     name: string;
     image_url: string;
     quantity: number;
+    material: string;
     height: number;
     width: number;
     depth: number;
@@ -25,6 +27,7 @@ export type ReceivedItemData = {
     image_url: string;
     status: string;
     quantity: number;
+    material: string;
     height: number;
     width: number;
     depth: number;
@@ -33,24 +36,27 @@ export type ReceivedItemData = {
 
 
 const MainPage: React.FC = () => {
-    const params = useParams();
-    const id = params.id === undefined ? '' : params.id;
+    const {id} = useParams();
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
         new Map<string, string>([['Комплектующие', '/']])
     );
 
     const [item, setItem] = useState<Item>();
 //доп информация
-    const fetchItem = async () => {
+    const getItem = async () => {
         try {
-            const response = await fetch(`http://172.20.10.6:7070/items/${id}`);
-            const data = await response.json();
+            //const response = await fetch(`http://172.20.10.6:8080/items/${id}`);
+           // const data = await response.json();
+           const { data } = await api.items.itemsDetail(id, {
+            withCredentials: true
+        });
             const itemData = data.item; // Извлечение объекта item из объекта
             setItem({
                 id: Number(itemData.id),
                 name: itemData.name,
                 image_url: itemData.image_url,
                 quantity: itemData.quantity,
+                material: itemData.material,
                 height: itemData.height,
                 width: itemData.width,
                 depth: itemData.depth,
@@ -66,7 +72,7 @@ const MainPage: React.FC = () => {
         }
      };     
     useEffect(() => {
-        fetchItem();
+        getItem();
         // console.log(currentUrl)
     }, []);
 
@@ -78,7 +84,7 @@ const MainPage: React.FC = () => {
                 <div className='d-flex gap-5'>
                     <Image
                         style={{ width: '45%' }}
-                        src={item?.image_url ? item?.image_url : "https://www.solaredge.com/us/sites/nam/files/Placeholders/Placeholder-4-3.jpg"}
+                        src={item?.image_url ? item?.image_url : "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"}
                         rounded
                     />
                     <div style={{width: '55%'}}>
@@ -87,6 +93,7 @@ const MainPage: React.FC = () => {
                             <h4>Описание:</h4>
                             <p>Количество: {item?.quantity}</p>
                             <p>Код: {item?.barcode}</p>
+                            <p>Материал: {item?.material}</p>
                             <p>Размеры: {item?.height}x{item?.width}x{item?.depth}</p>
                         </div>
                     </div>

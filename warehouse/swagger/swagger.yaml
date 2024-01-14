@@ -1,0 +1,561 @@
+definitions:
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.ImageSwagger:
+    properties:
+      error:
+        type: string
+      link:
+        type: string
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Item:
+    properties:
+      barcode:
+        type: integer
+      depth:
+        type: integer
+      height:
+        type: integer
+      id:
+        type: integer
+      image_url:
+        type: string
+      material:
+        type: string
+      name:
+        type: string
+      quantity:
+        type: integer
+      status:
+        type: string
+      width:
+        type: integer
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.ItemInRequest:
+    properties:
+      barcode:
+        type: integer
+      depth:
+        type: integer
+      height:
+        type: integer
+      id:
+        type: integer
+      image_url:
+        type: string
+      material:
+        type: string
+      name:
+        type: string
+      quantity:
+        type: integer
+      quantityInRequest:
+        type: integer
+      status:
+        type: string
+      width:
+        type: integer
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Request:
+    properties:
+      completionDate:
+        type: string
+      creationDate:
+        type: string
+      creatorID:
+        type: integer
+      formationDate:
+        type: string
+      id:
+        type: integer
+      status:
+        description: status in ('draft','deleted','formed','completed','rejected')
+        type: string
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.RequestID:
+    properties:
+      id:
+        type: integer
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.RequestStatus:
+    properties:
+      status:
+        type: string
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingGetDraftRequestByIDResponse:
+    properties:
+      request:
+        $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Request'
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingGetItemByIDResponse:
+    properties:
+      item:
+        $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Item'
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingGetItemsResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Item'
+        type: array
+      orderID:
+        type: integer
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingGetRequestsForAdminWithFiltersResponse:
+    properties:
+      requests:
+        items:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Request'
+        type: array
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingLoginRequest:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingLoginResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      login:
+        type: string
+      role:
+        type: string
+      token:
+        type: string
+      userName:
+        type: string
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingRegisterRequest:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      login:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      userName:
+        type: string
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingRegisterResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      login:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      userName:
+        type: string
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingValidateResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      login:
+        type: string
+      requestID:
+        type: integer
+      role:
+        type: string
+      userName:
+        type: string
+    type: object
+  github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.UserRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.ItemInRequest'
+        type: array
+      request:
+        $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Request'
+    type: object
+info:
+  contact: {}
+paths:
+  /items:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: filter by title
+        format: text
+        in: query
+        name: title
+        type: string
+      - description: filter by material
+        format: text
+        in: query
+        name: material
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingGetItemsResponse'
+      summary: Get list of all items
+      tags:
+      - items
+  /items/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: item id
+        format: text
+        in: path
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingGetItemByIDResponse'
+      summary: Get item by id
+      tags:
+      - items
+  /items/{id}/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: item id
+        format: text
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Delete item by id
+      tags:
+      - items
+  /items/{id}/post:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: item id
+        format: text
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingGetDraftRequestByIDResponse'
+      summary: Post item to current order
+      tags:
+      - items
+  /items/{id}/put:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Item object
+        in: body
+        name: itemPrototype
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Item'
+      - description: item id
+        format: text
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Change item
+      tags:
+      - items
+  /items/image:
+    post:
+      consumes:
+      - multipart/form-data
+      - application/json
+      parameters:
+      - description: upload file
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: metadata
+        in: formData
+        name: metadata
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.ImageSwagger'
+      summary: Upload s3 file
+      tags:
+      - items
+  /items/post:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Item object
+        in: body
+        name: itemPrototype
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.Item'
+      summary: Create item
+      tags:
+      - items
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User object
+        in: body
+        name: userCreds
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingLoginResponse'
+      summary: Login
+      tags:
+      - auth
+  /logout:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - default: token=xxx
+        description: token
+        in: header
+        name: Cookie
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Logout
+      tags:
+      - auth
+  /orders:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: min date
+        format: text
+        in: query
+        name: min_date
+        type: string
+      - description: max date
+        format: text
+        in: query
+        name: max_date
+        type: string
+      - description: order status
+        format: text
+        in: query
+        name: status
+        type: string
+      - description: order creator
+        format: text
+        in: query
+        name: login
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingGetRequestsForAdminWithFiltersResponse'
+      summary: Get list of all orders
+      tags:
+      - orders
+  /orders/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: order id
+        format: text
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.UserRequest'
+      summary: Get order by id
+      tags:
+      - orders
+  /orders/{id}/approve:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Order status
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.RequestStatus'
+      - description: order id
+        format: text
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Approve or decline order
+      tags:
+      - orders
+  /orders/delete:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Order id
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.RequestID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Delete order
+      tags:
+      - orders
+  /orders/items/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: item id
+        format: text
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.UserRequest'
+      summary: Delete item from current order
+      tags:
+      - orders
+  /orders/make:
+    put:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Confirm current order
+      tags:
+      - orders
+  /signup:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User object
+        in: body
+        name: userPrototype
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingRegisterResponse'
+      summary: Sign up
+      tags:
+      - auth
+  /validate:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - default: token=xxx
+        description: token
+        in: header
+        name: Cookie
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_DanilaNik_IU5_RIP2023_internal_httpmodels.TestingValidateResponse'
+      summary: validate auth
+      tags:
+      - auth
+swagger: "2.0"
