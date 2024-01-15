@@ -36,9 +36,6 @@ const Header: React.FC = () => {
                 <div className={styles.header__blocks}>
                     <Link className={styles.header__block} to='/'>Комплектующие</Link>
                     {
-                        login == '' && <div style={{color:"#777"}} className={styles.header__block}>Заявки</div>
-                    }
-                    {
                         login != '' && <Link className={styles.header__block} to='/orders'>Заявки</Link>
                     }
                     {/* Добавить картинку корзины */}

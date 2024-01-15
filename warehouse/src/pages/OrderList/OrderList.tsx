@@ -2,8 +2,6 @@ import * as React from 'react';
 import Header from '../../components/Header';
 import BreadCrumbs from '../../components/BreadCrumbs';
 import Image from "react-bootstrap/Image"
-import PlusIcon from '../../components/Icons/PlusIcon'
-import MinusIcon from '../../components/Icons/MinusIcon'
 import styles from './DetaliedPage.module.scss'
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -48,6 +46,15 @@ const OrderListPage: React.FC = () => {
         newLinksMap.set('Заявки', '/orders');
         setLinksMap(newLinksMap)
 
+        data.requests?.sort(function compare( a, b ) {
+            if ( a.id > b.id ){
+              return -1;
+            }
+            if ( a.id < b.id ){
+              return 1;
+            }
+            return 0;
+          })
         setOrders(data)
 
         console.log(data)

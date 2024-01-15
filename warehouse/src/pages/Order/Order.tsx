@@ -149,13 +149,19 @@ const OrderPage: React.FC = () => {
                                     <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px'}} className="bg-danger d-flex justify-content-center align-items-center" onClick={() => {deleteItem(item.id)}}>
                                         <MinusIcon />
                                     </Button>
+                                    {/* <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', marginRight: '10px'}} className="bg-success d-flex justify-content-center align-items-center" onClick={() => {addItem(item.id)}}>
+                                        <span style={{fontSize: '20px', fontWeight: 'bold', lineHeight: '24px'}}>+</span>
+                                    </Button>
+                                    <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px'}} className="bg-danger d-flex justify-content-center align-items-center" onClick={() => {deleteItem(item.id)}}>
+                                        <span style={{fontSize: '20px', fontWeight: 'bold', lineHeight: '24px'}}>-</span>
+                                    </Button> */}
                                 </td>
                             </tr>
                             ))}
                         </tbody>
                     </Table>
-                    {order?.request?.status == "draft" && <Button onClick={approveOrder} variant="success" className="m-3" style={{width: '200px'}}>Подтвердить заказ</Button>}
-                    {order?.request?.status == "draft" && <Button onClick={deleteOrder} variant="danger" className="m-3" style={{width: '200px'}}>Удалить заказ</Button>}
+                    {order?.request?.status == "draft" && <Button onClick={approveOrder} variant="success" className="m-3" style={{width: '200px'}}>Подтвердить заявку</Button>}
+                    {order?.request?.status == "draft" && <Button onClick={deleteOrder} variant="danger" className="m-3" style={{width: '200px'}}>Удалить заявку</Button>}
                 </div>
             </div>
         </div>
