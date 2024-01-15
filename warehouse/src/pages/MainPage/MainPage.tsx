@@ -48,7 +48,8 @@ const MainPage: React.FC = () => {
     
     const [items, setItems] = useState<Item[]>([]);
     const linksMap = new Map<string, string>([
-        ['Комплектующие', '/']
+        ['Домашняя страница', '/'],
+        ['Комплектующие', "/items"]
     ]);
 //запрос на главной 
     const getItems = async () => {
@@ -110,14 +111,14 @@ const MainPage: React.FC = () => {
                 <Form className="d-flex gap-3" onSubmit={handleFormSubmit}>
                     <div className='w-100'>
                         <Form.Group style={{height: 60}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} value={title} onChange={e => {dispatch(setTitle(e.target.value))}} type="text" placeholder="Введите название ..." />
+                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 16}} value={title} onChange={e => {dispatch(setTitle(e.target.value))}} type="text" placeholder="Введите название ..." />
                             <Form.Select
+                                style= {{marginTop: 10, width: '20%'}}
                                 value={material}
                                 onChange={e => {
-                                // setSelectedOption(e.target.value);
-                                dispatch(setMaterial(e.target.value))
+                                    dispatch(setMaterial(e.target.value))
                                 }}
-                                aria-label="Выберите материал" className='m-3' id='material'>
+                                aria-label="Выберите материал" className='mb-3' id='material'>
                                 <option value="">Выберите материал</option>
                                 <option value="металл">металл</option>
                                 <option value="композит">композит</option>
@@ -125,7 +126,6 @@ const MainPage: React.FC = () => {
                                 <option value="пластмасса">пластмасса</option>
                             </Form.Select>
                         </Form.Group>
-                        
                     </div>
                     
                     <Button style={{backgroundColor: "#FF9800", color: '#FFF', padding: "15px 40px", borderColor: "#000", fontSize: 18, height: 60}} onClick={() => handleSearchButtonClick()}>

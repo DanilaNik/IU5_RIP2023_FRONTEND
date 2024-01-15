@@ -55,14 +55,14 @@ const LoginPage: React.FC = () => {
                         <Form.Group style={{height: 50}} className='w-100 mb-3' controlId="search__sub.input__sub">
                             <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="text" placeholder="Логин..." onChange={(e)=>{
                                 setUserLogin(e.target.value)
-                            }} />
+                            }} required/>
                         </Form.Group>
                     </div>
                     <div className={styles.form__item}>
                         <Form.Group style={{height: 50}} className='w-100 mb-3' controlId="search__sub.input__sub">
                             <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 18}} type="password" placeholder="Пароль..." onChange={(e)=>{
                                 setPassword(e.target.value)
-                            }} />
+                            }} required/>
                         </Form.Group>
                     </div>
                     

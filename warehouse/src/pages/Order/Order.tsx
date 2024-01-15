@@ -2,6 +2,8 @@ import * as React from 'react';
 import Header from '../../components/Header';
 import BreadCrumbs from '../../components/BreadCrumbs';
 import Image from "react-bootstrap/Image"
+import PlusIcon from '../../components/Icons/PlusIcon'
+import MinusIcon from '../../components/Icons/MinusIcon'
 import styles from './DetaliedPage.module.scss'
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -42,7 +44,7 @@ const OrderPage: React.FC = () => {
     const [order, setOrder] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsUserRequest>()
 
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
-        new Map<string, string>([['Комплектующие', '/']])
+        new Map<string, string>([['Домашняя страница', '/']])
     );
 
     const [item, setItem] = useState<Item>();
@@ -66,6 +68,11 @@ const OrderPage: React.FC = () => {
                 }
                 return 0;
               })
+            
+            const newLinksMap = new Map<string, string>(linksMap); // Копирование старого Map
+            newLinksMap.set('Текущая заявка', '/orders/' + id);
+            setLinksMap(newLinksMap) 
+
             setOrder(data)
             console.log(data)
         }
@@ -135,9 +142,13 @@ const OrderPage: React.FC = () => {
                                 <td>{item.barcode}</td>
                                 <td>{item.material}</td>
                                 <td>{item.quantityInRequest}</td>
-                                <td>
-                                    <Button onClick={() => {addItem(item.id)}} >Добавить</Button>
-                                    <Button onClick={() => {deleteItem(item.id)}}>Удалить</Button>
+                                <td style={{display: 'flex'}}>
+                                    <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', marginRight: '10px'}} className="bg-success d-flex justify-content-center align-items-center" onClick={() => {addItem(item.id)}}>
+                                        <PlusIcon />
+                                    </Button>
+                                    <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px'}} className="bg-danger d-flex justify-content-center align-items-center" onClick={() => {deleteItem(item.id)}}>
+                                        <MinusIcon />
+                                    </Button>
                                 </td>
                             </tr>
                             ))}

@@ -40,7 +40,7 @@
     
     &__logo:hover {
         color: #FF9800;
-        outline: 2px solid white;
+        box-shadow: 0 0 0 2px white
       }
       
     &__profile {
@@ -48,5 +48,15 @@
         color: inherit;
         font-weight: bold;
     }
- }
+}
  
+.btn{
+    &:focus {
+        outline: none !important;
+        outline-offset: none !important;
+    }
+     
+    &:hover {
+        box-shadow: 0 0 0 2px white !important;
+    } 
+ }

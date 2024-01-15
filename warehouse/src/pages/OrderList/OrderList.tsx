@@ -2,6 +2,8 @@ import * as React from 'react';
 import Header from '../../components/Header';
 import BreadCrumbs from '../../components/BreadCrumbs';
 import Image from "react-bootstrap/Image"
+import PlusIcon from '../../components/Icons/PlusIcon'
+import MinusIcon from '../../components/Icons/MinusIcon'
 import styles from './DetaliedPage.module.scss'
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -17,8 +19,9 @@ const OrderListPage: React.FC = () => {
     //const [order, setOrder] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsUserRequest>()
     const [orders, setOrders] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetRequestsForAdminWithFiltersResponse>()
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
-        new Map<string, string>([['Комплектующие', '/']])
+        new Map<string, string>([['Домашняя страница', '/']])
     );
+
 
 
     const navigate = useNavigate();
@@ -40,6 +43,10 @@ const OrderListPage: React.FC = () => {
         const { data } = await api.orders.ordersList({},{
             withCredentials: true,
         })
+
+        const newLinksMap = new Map<string, string>(linksMap); // Копирование старого Map
+        newLinksMap.set('Заявки', '/orders');
+        setLinksMap(newLinksMap)
 
         setOrders(data)
 

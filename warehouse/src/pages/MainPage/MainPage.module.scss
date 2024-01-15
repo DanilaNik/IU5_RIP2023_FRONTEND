@@ -9,6 +9,7 @@
 
     &__cards {
         margin: 0 auto;
+        padding-top: 40px;
         margin-top: 40px;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -17,7 +18,7 @@
         padding-bottom: 50px;
     }
 }
-
+ 
 #search__sub .input__sub {
-    min-height: 150px; /* Задайте желаемую высоту в пикселях */
+    min-height: 150px;
 }

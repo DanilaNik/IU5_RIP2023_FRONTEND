@@ -38,7 +38,7 @@ export type ReceivedItemData = {
 const MainPage: React.FC = () => {
     const {id} = useParams();
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
-        new Map<string, string>([['Комплектующие', '/']])
+        new Map<string, string>([['Домашняя страница', '/'], ['Комплектующие', '/']])
     );
 
     const [item, setItem] = useState<Item>();
@@ -47,9 +47,9 @@ const MainPage: React.FC = () => {
         try {
             //const response = await fetch(`http://172.20.10.6:8080/items/${id}`);
            // const data = await response.json();
-           const { data } = await api.items.itemsDetail(id, {
+            const { data } = await api.items.itemsDetail(id, {
             withCredentials: true
-        });
+            });
             const itemData = data.item; // Извлечение объекта item из объекта
             setItem({
                 id: Number(itemData.id),

@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import MainPage from '../pages/MainPage';
 import DetaliedPage from '../pages/DetaliedPage';
 import RegistrationPage from '../pages/RegistrationPage';
@@ -13,16 +13,20 @@ import OrderListPage from '../pages/OrderList/OrderList';
 
 
 function App() {
+  const navigate = useNavigate();
   const login = useSelector((state: RootState) => state.user.login)
   const dispatch = useDispatch<AppDispatch>()
   const validate = async() => {
-    const {data} = await api.validate.validateCreate({
-    withCredentials: true,
-  })
-  
-  dispatch(setLogin(String(data.login)))
-  console.log("got dispatch login " +  login)
-  console.log(data)
+    try {
+      const {data} = await api.validate.validateCreate({
+        withCredentials: true,
+      })
+      dispatch(setLogin(String(data.login)))
+      console.log("got dispatch login " +  login)
+    } catch (error) {
+      console.error("Error during validation: ", error);
+      navigate("/");
+    }
   }
     useEffect(()=> {
       validate()
