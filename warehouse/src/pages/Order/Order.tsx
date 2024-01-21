@@ -1,42 +1,18 @@
 import * as React from 'react';
 import Header from '../../components/Header';
 import BreadCrumbs from '../../components/BreadCrumbs';
-import Image from "react-bootstrap/Image"
 import PlusIcon from '../../components/Icons/PlusIcon'
 import MinusIcon from '../../components/Icons/MinusIcon'
 import styles from './DetaliedPage.module.scss'
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-
 import { mockItems } from '../../../consts'
 import { api } from '../../api';
-import { GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequest, GithubComDanilaNikIU5RIP2023InternalHttpmodelsUserRequest } from '../../api/Api';
+import { GithubComDanilaNikIU5RIP2023InternalHttpmodelsUserRequest } from '../../api/Api';
 import { Button, Form, Table } from 'react-bootstrap';
-
-type Item = {
-    id: number;
-    name: string;
-    image_url: string;
-    quantity: number;
-    material: string;
-    height: number;
-    width: number;
-    depth: number;
-    barcode: number;
-};
-
-export type ReceivedItemData = {
-    id: number;
-    name: string;
-    image_url: string;
-    status: string;
-    quantity: number;
-    material: string;
-    height: number;
-    width: number;
-    depth: number;
-    barcode: number;
-}
+import { setCurrentPage } from '../../components/state/user/user';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../components/state/state';
 
 
 const OrderPage: React.FC = () => {
@@ -47,10 +23,9 @@ const OrderPage: React.FC = () => {
         new Map<string, string>([['Домашняя страница', '/']])
     );
 
-    const [item, setItem] = useState<Item>();
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
 
     const navigate = useNavigate();
-
 
     const getOrder = async () => {
         let l = 0;
@@ -58,23 +33,27 @@ const OrderPage: React.FC = () => {
             const { data } = await api.orders.ordersDetail(id, {
                 withCredentials: true,
             })
-            l = data.items?.length;
+            l = Number(data.items?.length);
             data?.items?.sort(function compare( a, b ) {
-                if ( a.id < b.id ){
+                if ( Number(a.id) < Number(b.id) ){
                   return -1;
                 }
-                if ( a.id > b.id ){
+                if ( Number(a.id) > Number(b.id) ){
                   return 1;
                 }
                 return 0;
               })
             
-            const newLinksMap = new Map<string, string>(linksMap); // Копирование старого Map
-            newLinksMap.set('Текущая заявка', '/orders/' + id);
+            const newLinksMap = new Map<string, string>(linksMap); 
+            if (data.request?.status != 'draft'){
+                newLinksMap.set('Заявки', '/orders');
+                newLinksMap.set('Заявка №' + data.request?.id, '/orders/' + id);
+            } else {
+                newLinksMap.set('Текущая заявка', '/orders/' + id);
+            }
             setLinksMap(newLinksMap) 
 
             setOrder(data)
-            console.log(data)
         }
         if (l == 0) {
             await api.orders.deleteDelete({id: Number(id)}, {
@@ -122,7 +101,7 @@ const OrderPage: React.FC = () => {
             <Header/>
             <div className={styles.content} style={{paddingTop: "90px"}}>
                 <BreadCrumbs links={linksMap}/>
-                <div>
+                <div style={{paddingBottom: '3%'}}>
                     <Table striped bordered hover responsive="md" className="table w-100">
                         <thead>
                             <tr>
@@ -142,20 +121,16 @@ const OrderPage: React.FC = () => {
                                 <td>{item.barcode}</td>
                                 <td>{item.material}</td>
                                 <td>{item.quantityInRequest}</td>
-                                <td style={{display: 'flex'}}>
-                                    <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', marginRight: '10px'}} className="bg-success d-flex justify-content-center align-items-center" onClick={() => {addItem(item.id)}}>
-                                        <PlusIcon />
-                                    </Button>
-                                    <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px'}} className="bg-danger d-flex justify-content-center align-items-center" onClick={() => {deleteItem(item.id)}}>
-                                        <MinusIcon />
-                                    </Button>
-                                    {/* <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', marginRight: '10px'}} className="bg-success d-flex justify-content-center align-items-center" onClick={() => {addItem(item.id)}}>
-                                        <span style={{fontSize: '20px', fontWeight: 'bold', lineHeight: '24px'}}>+</span>
-                                    </Button>
-                                    <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px'}} className="bg-danger d-flex justify-content-center align-items-center" onClick={() => {deleteItem(item.id)}}>
-                                        <span style={{fontSize: '20px', fontWeight: 'bold', lineHeight: '24px'}}>-</span>
-                                    </Button> */}
-                                </td>
+                                {order.request?.status == 'draft' &&
+                                    <td style={{display: 'flex'}}>
+                                        <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', marginRight: '10px'}} className="bg-success d-flex justify-content-center align-items-center" onClick={() => {addItem(Number(item.id))}}>
+                                            <PlusIcon />
+                                        </Button>
+                                        <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px'}} className="bg-danger d-flex justify-content-center align-items-center" onClick={() => {deleteItem(Number(item.id))}}>
+                                            <MinusIcon />
+                                        </Button>
+                                    </td>
+                                }
                             </tr>
                             ))}
                         </tbody>

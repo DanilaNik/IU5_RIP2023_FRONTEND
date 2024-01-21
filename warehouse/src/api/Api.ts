@@ -42,6 +42,7 @@ export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsItemInRequest {
 }
 
 export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequest {
+  adminID?: number;
   completionDate?: string;
   creationDate?: string;
   creatorID?: number;
@@ -53,6 +54,18 @@ export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequest {
 
 export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequestID {
   id?: number;
+}
+
+export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequestInfo {
+  adminID?: number;
+  completionDate?: string;
+  creationDate?: string;
+  creatorID?: number;
+  formationDate?: string;
+  id?: number;
+  /** status in ('draft','deleted','formed','completed','rejected') */
+  status?: string;
+  userEmail?: string;
 }
 
 export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequestStatus {
@@ -73,7 +86,7 @@ export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetItemsRe
 }
 
 export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetRequestsForAdminWithFiltersResponse {
-  requests?: GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequest[];
+  requests?: GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequestInfo[];
 }
 
 export interface GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingLoginRequest {

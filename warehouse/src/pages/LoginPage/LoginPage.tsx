@@ -8,22 +8,23 @@ import { api } from '../../api';
 import { useState } from 'react';
 import { AppDispatch, RootState } from '../../components/state/state';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmail, setId, setLogin, setName, setRole,  } from '../../components/state/user/user';
+import { setCurrentPage, setEmail, setId, setLogin, setName, setRole,  } from '../../components/state/user/user';
 
 
 
 const LoginPage: React.FC = () => {
     //const login = useSelector((state: RootState) => state.user.login)
     const dispatch = useDispatch<AppDispatch>()
-
     const navigate = useNavigate()
     const [login, setUserLogin] = useState("")
     const [password, setPassword] = useState("")
 
-    const handleFormSubmit = async(event) => {
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
+    dispatch(setCurrentPage('Вход'))
+
+
+    const handleFormSubmit = async(event: { preventDefault: () => void; }) => {
         event.preventDefault()
-        console.log(login)
-        console.log(password)
         const { data } = await api.login.loginCreate({
             login: login,
             password: password,
@@ -31,15 +32,15 @@ const LoginPage: React.FC = () => {
             withCredentials: true 
         });
 
-        dispatch(setLogin(data.login))
-        dispatch(setName(data.userName))
-        dispatch(setId(data?.id))
+        dispatch(setLogin(String(data.login)))
+        dispatch(setName(String(data.userName)))
+        dispatch(setId(Number(data.id)))
         dispatch(setRole(String(data.role)))
-        dispatch(setEmail(data.email))
+        dispatch(setEmail(String(data.email)))
         
-        console.log(data)
+        //console.log(data)
         navigate("/")
-        console.log('Form was submitted')
+        //console.log('Form was submitted')
     }
 
     return (
@@ -66,7 +67,7 @@ const LoginPage: React.FC = () => {
                         </Form.Group>
                     </div>
                     
-                    <Button type='submit' style={{backgroundColor: "#2787F5", padding: "10px 20px", borderColor: "#000", fontSize: 18, height: 50}}>Войти</Button>
+                    <Button type='submit' style={{backgroundColor: "#232F3E", padding: "10px 20px", borderColor: "#000", fontSize: 18, height: 50}}>Войти</Button>
                     <Link className={styles.content__link} to='/registration'>У вас еще нет аккаунта?</Link>
                 </Form>
             </div>
@@ -76,6 +77,3 @@ const LoginPage: React.FC = () => {
   
 export default LoginPage;
 
-function setUserName(userName: string | undefined): any {
-    throw new Error('Function not implemented.');
-}

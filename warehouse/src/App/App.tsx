@@ -5,16 +5,21 @@ import RegistrationPage from '../pages/RegistrationPage';
 import LoginPage from '../pages/LoginPage';
 import { useEffect } from 'react';
 import { api } from '../api';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, store } from '../components/state/state';
-import {  setName, setEmail, setId, setLogin, setRole } from '../components/state/user/user';
+import { setLogin, setRole } from '../components/state/user/user';
 import OrderPage from '../pages/Order/Order';
 import OrderListPage from '../pages/OrderList/OrderList';
+import ItemListPage from '../pages/ItemList/ItemList';
+import ItemEditPage from '../pages/ItemEditPage/ItemEditPage';
+import ItemCreatePage from '../pages/ItemCreatePage/ItemCreatePage';
+
 
 
 function App() {
   const navigate = useNavigate();
   const login = useSelector((state: RootState) => state.user.login)
+  const role = useSelector((state: RootState) => state.user.role)
   const dispatch = useDispatch<AppDispatch>()
   const validate = async() => {
     try {
@@ -22,7 +27,7 @@ function App() {
         withCredentials: true,
       })
       dispatch(setLogin(String(data.login)))
-      console.log("got dispatch login " +  login)
+      dispatch(setRole(String(data.role)))
     } catch (error) {
       console.error("Error during validation: ", error);
       navigate("/");
@@ -38,15 +43,17 @@ function App() {
             <Routes>
                 <Route path="/" element={<MainPage />} />
 
-                <Route path="/items">
-                  <Route path=":id" element={<DetaliedPage />} />
-                </Route>
+                <Route path="/items/:id" element={<DetaliedPage />} />
 
-              
+                <Route path="/items/edit/" element={<ItemListPage />} />
+
+                <Route path="/items/edit/:id" element={<ItemEditPage />} />
+
+                <Route path="/items/create" element={<ItemCreatePage />} />
+                
                 <Route path="/orders/:id" element={<OrderPage />} />
 
                 <Route path="/orders" element={<OrderListPage />} />
-
 
                 <Route path='/registration' element={<RegistrationPage/>}></Route>
                 <Route path='/login' element={<LoginPage/>}></Route>

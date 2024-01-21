@@ -6,13 +6,20 @@ import Header from '../../components/Header';
 import styles from './RegistrationPage.module.scss'
 import { useState } from 'react';
 import { api } from '../../api';
+import { setCurrentPage } from '../../components/state/user/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../components/state/state';
 
 const MainPage: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
     const [login, setLogin] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [userName, setUserName] = useState("")
+
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
+    dispatch(setCurrentPage('Регистрация'))
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
@@ -62,7 +69,7 @@ const MainPage: React.FC = () => {
                         </Form.Group>
                     </div>
                     
-                    <Button type='submit' style={{backgroundColor: "#2787F5", padding: "10px 20px", borderColor: "#000", fontSize: 18, height: 50}}>Зарегистрироваться</Button>
+                    <Button type='submit' style={{backgroundColor: "#232F3E", padding: "10px 20px", borderColor: "#000", fontSize: 18, height: 50}}>Зарегистрироваться</Button>
                     <Link className={styles.content__link} to='/login'>У вас уже есть аккаунт?</Link>
                 </Form>
             </div>

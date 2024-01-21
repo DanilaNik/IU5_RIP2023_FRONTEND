@@ -9,4 +9,17 @@
         padding: 10px;
         border-radius: 10px;
     }
+
+    &__search {
+        padding-bottom: 60px;
+    }
+}
+
+#search__sub .input__sub {
+    min-height: 150px;
+}
+
+.noOutline:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }

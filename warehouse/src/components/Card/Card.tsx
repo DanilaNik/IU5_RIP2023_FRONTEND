@@ -21,7 +21,7 @@ export type CardProps = {
 const OneCard: React.FC<CardProps> = ({id, name, barcode, image_url, onButtonClick, onImageClick, callback}) => {
   const login = useSelector((state: RootState) => state.user.login)
   const add = async () => {
-    const {data} = await api.items.postCreate(id, {
+    const {data} = await api.items.postCreate(Number(id), {
       withCredentials: true,
     })
     callback()
@@ -43,17 +43,9 @@ const OneCard: React.FC<CardProps> = ({id, name, barcode, image_url, onButtonCli
         <Card.Title className='pt-3'>{name}</Card.Title>
         <Card.Text>Код: {barcode}</Card.Text>
         <div className='mt-auto w-100' style={{position: 'relative', height: 60, display: 'flex', justifyContent: 'space-between'}}>
-        {<Link to={`/items/${id}`}><Button style={{ backgroundColor: '#000', color: '#FFF', padding: '15px 30px', borderColor: "#000", fontSize: 18 }}  className={styles.btn} onClick={onImageClick} variant="primary">Подробнее</Button></Link>}
-        {login != '' && <Button style={{ backgroundColor: '#000', color: '#FFF', padding: '15px 30px', borderColor: "#000", fontSize: 18 }}  className={styles.btn} onClick={add} variant="primary">Добавить</Button>}
+          {<Link to={`/items/${id}`}><Button style={{ backgroundColor: '#232F3E', color: '#FFF', padding: '15px 30px', borderColor: "#000", fontSize: 18 }}  className={styles.btn} onClick={onImageClick} variant="primary">Подробнее</Button></Link>}
+          {login != '' && <Button style={{ backgroundColor: '#232F3E', color: '#FFF', padding: '15px 30px', borderColor: "#000", fontSize: 18 }}  className={styles.btn} onClick={add} variant="primary">Добавить</Button>}
         </div>
-
-        {/* <div className='mt-auto w-100' style={{position: 'relative', height: 60}}>
-          {login != '' &&  <Button style={{ backgroundColor: '#000', color: '#FFF', padding: '15px 30px', borderColor: "#000", position: 'absolute', right: 0, marginBottom: 50, fontSize: 18 }} onClick={onImageClick} variant="primary">Подробнее</Button>}
-        </div>
-        <div className='mt-auto w-100' style={{position: 'relative', height: 60}}>
-          {login != '' &&  <Button style={{ backgroundColor: '#000', color: '#FFF', padding: '15px 30px', borderColor: "#000", position: 'absolute', right: 0, marginBottom: 50, fontSize: 18 }} onClick={add} variant="primary">Добавить</Button>}
-        </div> */}
-         
       </Card.Body>
     </Card>
   );

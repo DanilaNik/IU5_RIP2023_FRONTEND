@@ -1,28 +1,36 @@
 import * as React from 'react';
 import Header from '../../components/Header';
 import BreadCrumbs from '../../components/BreadCrumbs';
-import Image from "react-bootstrap/Image"
-import styles from './DetaliedPage.module.scss'
+import PositiveIcon from '../../components/Icons/PositiveIcon'
+import NegativeIcon from '../../components/Icons/NegativeIcon';
+import styles from './OrderList.module.scss'
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-
-import { mockItems } from '../../../consts'
 import { api } from '../../api';
-import { GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequest, GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetRequestsForAdminWithFiltersResponse, GithubComDanilaNikIU5RIP2023InternalHttpmodelsUserRequest } from '../../api/Api';
+import { GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetRequestsForAdminWithFiltersResponse } from '../../api/Api';
 import { Button, Form, Table } from 'react-bootstrap';
-
+import { useInterval } from './interval';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../components/state/state';
+import { setCurrentPage, setOrderEmail, setMaxDate, setMinDate, setOrderStatus } from '../../components/state/user/user';
+import moment from 'moment-timezone';
 
 const OrderListPage: React.FC = () => {
-    //const {id} = useParams();
-    //const [order, setOrder] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsUserRequest>()
+    const dispatch = useDispatch<AppDispatch>()
+    const role = useSelector((state: RootState) => state.user.role)
+    const orderStatus = useSelector((state: RootState) => state.user.orderStatus)
+    const orderEmail = useSelector((state: RootState) => state.user.orderEmail)
+    const minDate = useSelector((state: RootState) => state.user.minDate)
+    const maxDate = useSelector((state: RootState) => state.user.maxDate)
     const [orders, setOrders] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetRequestsForAdminWithFiltersResponse>()
+
+    
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
         new Map<string, string>([['Домашняя страница', '/']])
     );
 
 
-
-    const navigate = useNavigate();
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
 
     const mapStatus = (status: string) => {
         const statusMap = {
@@ -38,7 +46,13 @@ const OrderListPage: React.FC = () => {
     }
 
     const getOrderList = async () => {
-        const { data } = await api.orders.ordersList({},{
+        dispatch(setCurrentPage('Заявки'))
+
+        const { data } = await api.orders.ordersList({
+            min_date: minDate,
+            max_date: maxDate,
+            status: orderStatus,
+        },{
             withCredentials: true,
         })
 
@@ -47,77 +61,140 @@ const OrderListPage: React.FC = () => {
         setLinksMap(newLinksMap)
 
         data.requests?.sort(function compare( a, b ) {
-            if ( a.id > b.id ){
+            if ( Number(a.id) > Number(b.id) ){
               return -1;
             }
-            if ( a.id < b.id ){
+            if ( Number(a.id) < Number(b.id) ){
               return 1;
             }
             return 0;
-          })
-        setOrders(data)
+        })
 
-        console.log(data)
+        if (orderEmail !== '') {
+            data.requests = data.requests?.filter(request => request.userEmail && request.userEmail.includes(orderEmail));
+        }
+        
+        setOrders(data)
+        //setTimeout(getOrderList, 1000)
     };
 
-    const approveOrder = async () => {
-        await api.orders.makeUpdate({
+    const approveOrder = async (orderID: number) => {
+        await api.orders.approveUpdate(String(orderID),{
+            status: 'completed',
+        }, {
             withCredentials: true,
         });
-
-        navigate("/")
     }
 
-    const deleteOrder = async () => {
-        await api.orders.deleteDelete({id: Number(id)}, {
+    const deleteOrder = async (orderID: number) => {
+        await api.orders.approveUpdate(String(orderID),{
+            status: 'rejected',
+        }, {
             withCredentials: true,
         });
-        navigate("/")
     }
 
-    useEffect(() => {
+    useInterval(() => {
         getOrderList()
-    }, []);
+    }, 1000);
+
+    // useEffect(() => {
+    //     getOrderList()
+    // }, [orderEmail]);
+
+    const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+    };
 
     return (
         <div className='main__page'>
             <Header/>
             <div className={styles.content} style={{paddingTop: "90px"}}>
                 <BreadCrumbs links={linksMap}/>
-                <div>
+                <div style={{paddingBottom: '3%'}}>
+                    {role == "Admin" &&
+                        <div className={styles["content__search"]}>
+                            <Form className="d-flex gap-3" onSubmit={handleFormSubmit}>
+                                <div className='w-100'>
+                                    <Form.Group style={{height: 70}} className='w-100 mb-3' controlId="search__sub.input__sub">
+                                        <div style={{marginBottom: 10}}>
+                                            Email пользователя
+                                            <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 16}} value={orderEmail} onChange={e => {dispatch(setOrderEmail(e.target.value))}} type="text" placeholder="Введите Email пользователя..." />
+                                        </div>
+                                        <div style={{display: 'flex', alignItems: 'center', width: '50%', marginBottom: 10}}>
+                                            <div style= {{ width: '20%', flex: 1, marginRight: 10, height: '40px'}}>
+                                                Статус заявки
+                                                <Form.Select
+                                                    value={orderStatus}
+                                                    onChange={e => {
+                                                        dispatch(setOrderStatus(e.target.value))
+                                                    }}
+                                                    aria-label="Выберите статус" className='mb-3' id='status'>
+                                                    <option value="">Выберите статус</option>
+                                                    <option value="formed">Выполняется</option>
+                                                    <option value="completed">Выполнен</option>
+                                                    <option value="rejected">Отменен</option>
+                                                </Form.Select>
+                                            </div>
+                                            <div style={{ width: '30%', height: '40px', marginRight: 10}}>
+                                                Начальная дата
+                                                <Form.Control  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {dispatch(setMinDate(event.target.value))}} value={minDate} className={styles.form__input} type="date" placeholder="Начальная дата (Год-Месяц-День)*"  max={moment().tz(moment.tz.guess()).format('YYYY-MM-DD')}/>
+                                            </div>
+                                            <div style={{ width: '30%', height: '40px'}}>
+                                                Конечная дата
+                                                <Form.Control  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {dispatch(setMaxDate(event.target.value))}} value={maxDate} className={styles.form__input} type="date" placeholder="Конечная дата (Год-Месяц-День)*" max={moment().tz(moment.tz.guess()).format('YYYY-MM-DD')}/>
+                                            </div>
+                                        </div>
+                                    </Form.Group>
+                                </div>
+                            </Form>
+                        </div>
+                    }
                     <Table bordered hover responsive="md" className="table w-100">
                         <thead>
                             <tr>
                             <th>№ заказа</th>
-                            <th>Дата создания</th>
+                            {role == "Admin" && <th>Email</th>}
+                            {role == "Admin" && <th>ID админа</th>}
                             <th>Дата формирования</th>
+                            <th>Дата выполнения</th>
                             <th>Статус</th>
-                            {/* {order?.request?.status == "draft" && <th>Действие</th>} */}
+                            <th>Действие</th>
                             </tr>
                         </thead>
                         <tbody>
                             {orders?.requests?.map((request, index) => (
                             <tr key={index}>
                                 <td>{request.id}</td>
-                                {/* <td><Link to={"/items/"+item.id}>{item.name}</Link></td> */}
-                                <td>{formatDate(request.creationDate)}</td>
-                                <td>{formatDate(request.formationDate)}</td>
-                                <td>{mapStatus(request.status)}</td>
-                                {/* <td>
-                                    <Button onClick={() => {addItem(item.id)}} >Добавить</Button>
-                                    <Button onClick={() => {deleteItem(item.id)}}>Удалить</Button>
-                                </td> */}
+                                {role == "Admin" && <td>{request.userEmail}</td>}
+                                {role == 'Admin' && request.adminID != 0 && <td>{request.adminID}</td>}
+                                {role == 'Admin' && request.adminID == 0 && <td>-</td>}
+                                <td>{formatDate(String(request.formationDate))}</td>
+                                {request.status == 'completed' && <td>{formatDate(String(request.completionDate))}</td>}
+                                {request.status != 'completed' && <td>-</td>}
+                                <td>{mapStatus(String(request.status))}</td>
+                                <td style={{display: 'flex', gap: '10px'}}>
+                                    <Link to={"/orders/" + request.id}><Button className="noOutline" style={{backgroundColor: "#232F3E", borderColor: "#000"}}>Подробнее</Button></Link>
+                                    {role == 'Admin' && request.status != 'completed' &&
+                                        <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', borderColor: "green"}} className="noOutline bg-success d-flex justify-content-center align-items-center" onClick={() => {approveOrder(Number(request.id))}}>
+                                            <PositiveIcon />
+                                        </Button>
+                                    }
+                                    {role == 'Admin' && request.status != 'completed' &&       
+                                        <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', borderColor: "red"}} className="noOutline bg-danger d-flex justify-content-center align-items-center" onClick={() => {deleteOrder(Number(request.id))}}>
+                                            <NegativeIcon />
+                                        </Button>
+                                    }   
+                                </td>
                             </tr>
                             ))}
                         </tbody>
                     </Table>
-                    {/* {order?.request?.status == "draft" && <Button onClick={approveOrder} variant="success" className="m-3" style={{width: '200px'}}>Подтвердить заказ</Button>}
-                    {order?.request?.status == "draft" && <Button onClick={deleteOrder} variant="danger" className="m-3" style={{width: '200px'}}>Удалить заказ</Button>} */}
                 </div>
             </div>
         </div>
         
     )
 };
-  
+
 export default OrderListPage;

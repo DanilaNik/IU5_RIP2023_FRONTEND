@@ -10,34 +10,10 @@ import BreadCrumbs from '../../components/BreadCrumbs';
 import SearchIcon from '../../components/Icons/SearchIcon'
 import { mockItems } from '../../../consts';
 import { api } from '../../api';
-import { setMaterial, setOrderID, setTitle } from '../../components/state/user/user';
+import { setCurrentPage, setMaterial, setOrderID, setTitle } from '../../components/state/user/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../components/state/state';
-
-export type Item = {
-    id: number;
-    name: string;
-    image_url: string;
-    quantity: number;
-    material: string;
-    height: number;
-    width: number;
-    depth: number;
-    barcode: number;
-}
-
-export type ReceivedItemData = {
-    id: number;
-    name: string;
-    image_url: string;
-    status: string;
-    quantity: number;
-    material: string;
-    height: number;
-    width: number;
-    depth: number;
-    barcode: number;
-}
+import { GithubComDanilaNikIU5RIP2023InternalHttpmodelsItem } from '../../api/Api';
 
 
 
@@ -45,14 +21,18 @@ const MainPage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const title = useSelector((state: RootState) => state.user.title)
     const material = useSelector((state: RootState) => state.user.material)
+
+
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
     
-    const [items, setItems] = useState<Item[]>([]);
+    const [items, setItems] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsItem[]>([]);
     const linksMap = new Map<string, string>([
         ['Домашняя страница', '/'],
-        ['Комплектующие', "/items"]
+        ['Комплектующие', '/items']
     ]);
-//запрос на главной 
+
     const getItems = async () => {
+        dispatch(setCurrentPage('Главная'))
         try {
             const { data } = await api.items.itemsList({
                 title: title,
@@ -61,7 +41,7 @@ const MainPage: React.FC = () => {
                 withCredentials: true
             });
             const itemsData = data.items;
-            const newItemsArr = itemsData.map((raw: ReceivedItemData) => ({
+            const newItemsArr = itemsData?.map((raw: GithubComDanilaNikIU5RIP2023InternalHttpmodelsItem) => ({
                 id: raw.id,
                 name: raw.name,
                 image_url: raw.image_url,
@@ -74,17 +54,18 @@ const MainPage: React.FC = () => {
                 barcode: raw.barcode
             }));
             setItems(newItemsArr);
-            dispatch(setOrderID(data.orderID))
+            dispatch(setOrderID(Number(data.orderID)))
         } catch (error) {
             console.log('запрос не прошел !', error);
             if (title || material) {
-                const filteredArray = mockItems.filter(mockItem => (mockItem.name.includes(titleValue) && mockItem.material.includes(materialValue)));
+                const filteredArray = mockItems.filter(mockItem => (mockItem.name.includes(title) && mockItem.material.includes(material)));
                 setItems(filteredArray);
             } else {
                 setItems(mockItems);
             }
         }
     };
+
     useEffect(() => {
         getItems();
     }, []);
@@ -92,11 +73,6 @@ const MainPage: React.FC = () => {
     const handleSearchButtonClick = () => {
         getItems();
     }
-
-    // const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    //     setTitleValue(event.target.value);
-    // };
-
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -134,7 +110,7 @@ const MainPage: React.FC = () => {
                 </Form>
 
                 <div className={styles["content__cards"]}>
-                    {items.map((item: Item) => (
+                    {items.map((item: GithubComDanilaNikIU5RIP2023InternalHttpmodelsItem) => (
                         <OneCard callback={getItems} id={item.id} image_url={item.image_url} onButtonClick={() => console.log('add to application')} name={item.name} barcode={Number(item.barcode)}></OneCard>
                     ))}
                 </div>

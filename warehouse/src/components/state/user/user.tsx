@@ -9,6 +9,11 @@ interface UserState {
     orderID: number,
     title: string,
     material: string,
+    orderStatus: string,
+    currentPage: string,
+    minDate: string,
+    maxDate: string,
+    orderEmail: string,
 }
 
 const initialState: UserState = {
@@ -20,6 +25,11 @@ const initialState: UserState = {
     orderID: 0,
     title: '',
     material: '',
+    orderStatus: '',
+    currentPage: '',
+    minDate: '',
+    maxDate: '',
+    orderEmail: '',
 }
 
 const userSlice = createSlice({
@@ -50,6 +60,21 @@ const userSlice = createSlice({
         setMaterial: (state, value: PayloadAction<string>) => {
             state.material = value.payload
         },
+        setOrderStatus: (state, value: PayloadAction<string>) => {
+            state.orderStatus = value.payload
+        },
+        setCurrentPage: (state, value: PayloadAction<string>) => {
+            state.currentPage = value.payload
+        },
+        setMinDate: (state, value: PayloadAction<string>) => {
+            state.minDate = value.payload
+        },
+        setMaxDate: (state, value: PayloadAction<string>) => {
+            state.maxDate = value.payload
+        },
+        setOrderEmail: (state, value: PayloadAction<string>) => {
+            state.orderEmail = value.payload
+        },
     }
 })
 
@@ -62,6 +87,11 @@ export const {
     setOrderID,
     setTitle,
     setMaterial,
+    setOrderStatus,
+    setCurrentPage,
+    setMinDate,
+    setMaxDate,
+    setOrderEmail,
 } = userSlice.actions
 
 export default userSlice.reducer

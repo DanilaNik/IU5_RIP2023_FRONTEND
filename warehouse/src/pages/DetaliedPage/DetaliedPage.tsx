@@ -8,6 +8,9 @@ import { useParams } from 'react-router-dom';
 
 import { mockItems } from '../../../consts'
 import { api } from '../../api';
+import { setCurrentPage } from '../../components/state/user/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../components/state/state';
 
 type Item = {
     id: number;
@@ -36,14 +39,20 @@ export type ReceivedItemData = {
 
 
 const MainPage: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
     const {id} = useParams();
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
         new Map<string, string>([['Домашняя страница', '/'], ['Комплектующие', '/']])
     );
-
     const [item, setItem] = useState<Item>();
+
+
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
+
+
 //доп информация
     const getItem = async () => {
+        dispatch(setCurrentPage('Детали услуги'))
         try {
             //const response = await fetch(`http://172.20.10.6:8080/items/${id}`);
            // const data = await response.json();
@@ -52,19 +61,19 @@ const MainPage: React.FC = () => {
             });
             const itemData = data.item; // Извлечение объекта item из объекта
             setItem({
-                id: Number(itemData.id),
-                name: itemData.name,
-                image_url: itemData.image_url,
-                quantity: itemData.quantity,
-                material: itemData.material,
-                height: itemData.height,
-                width: itemData.width,
-                depth: itemData.depth,
-                barcode: itemData.barcode
+                id: Number(itemData?.id),
+                name: String(itemData?.name),
+                image_url: String(itemData?.image_url),
+                quantity: Number(itemData?.quantity),
+                material: String(itemData?.material),
+                height: Number(itemData?.height),
+                width: Number(itemData?.width),
+                depth: Number(itemData?.depth),
+                barcode: Number(itemData?.barcode)
             })
      
             const newLinksMap = new Map<string, string>(linksMap); // Копирование старого Map
-            newLinksMap.set(itemData.name, '/items/' + id);
+            newLinksMap.set(String(itemData?.name), '/items/' + id);
             setLinksMap(newLinksMap)
         } catch {
             const item = mockItems.find(item => item.id === Number(id));
