@@ -78,7 +78,7 @@ const MainPage: React.FC = () => {
         } catch (error) {
             console.log('запрос не прошел !', error);
             if (title || material) {
-                const filteredArray = mockItems.filter(mockItem => (mockItem.name.includes(titleValue) && mockItem.material.includes(materialValue)));
+                const filteredArray = mockItems.filter(mockItem => (mockItem.name.includes(title) && mockItem.material.includes(material)));
                 setItems(filteredArray);
             } else {
                 setItems(mockItems);
