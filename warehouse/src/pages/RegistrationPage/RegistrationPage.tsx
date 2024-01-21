@@ -35,11 +35,8 @@ const MainPage: React.FC = () => {
     return (
         <div className='main__page'>
             <Header/>
-            <div style={{position: 'relative'}}className={styles['content']}>
-                <Form onSubmit={handleFormSubmit}
-                style={{backgroundColor: '#fff', width: '50%', padding: '60px 40px',
-                margin: '0 auto', display: 'flex', flexDirection: 'column',
-                boxShadow: '0px 4px 10px 0px rgba(0, 0, 0, 0.25)', borderRadius: '10px'}}>
+            <div className={styles.content} style={{position: 'relative'}}>
+                <Form onSubmit={handleFormSubmit} className={styles['form-container']}>
                     <h3 className={styles.content__title}>Регистрация</h3>
                     <div className={styles.form__item}>
                         <Form.Group style={{height: 50}} className='w-100 mb-3' controlId="search__sub.input__sub">
@@ -62,7 +59,7 @@ const MainPage: React.FC = () => {
                         </Form.Group>
                     </div>
                     
-                    <Button type='submit' style={{backgroundColor: "#2787F5", padding: "10px 20px", borderColor: "#000", fontSize: 18, height: 50}}>Зарегистрироваться</Button>
+                    <Button type='submit' className={styles['register-button']}>Зарегистрироваться</Button>
                     <Link className={styles.content__link} to='/login'>У вас уже есть аккаунт?</Link>
                 </Form>
             </div>

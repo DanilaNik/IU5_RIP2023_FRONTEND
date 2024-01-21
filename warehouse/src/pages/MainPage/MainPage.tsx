@@ -93,10 +93,6 @@ const MainPage: React.FC = () => {
         getItems();
     }
 
-    // const handleTitleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    //     setTitleValue(event.target.value);
-    // };
-
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -118,7 +114,7 @@ const MainPage: React.FC = () => {
                                 onChange={e => {
                                     dispatch(setMaterial(e.target.value))
                                 }}
-                                aria-label="Выберите материал" className='mb-3' id='material'>
+                                aria-label="Выберите материал" className='mb-3 form-select' id='material'>
                                 <option value="">Выберите материал</option>
                                 <option value="металл">металл</option>
                                 <option value="композит">композит</option>

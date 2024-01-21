@@ -2,23 +2,68 @@
     padding-top: 90px;
     max-width: 1240px;
     margin: 0 auto;
-
-    &__title {
-        font-size: 13px;
-    }
-
-    &__cards {
-        margin: 0 auto;
-        padding-top: 40px;
-        margin-top: 40px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 50px;
-        margin-top: 30px;
-        padding-bottom: 50px;
-    }
-}
- 
-#search__sub .input__sub {
+  }
+  
+  .content__title {
+    font-size: 13px;
+  }
+  
+  .content__cards {
+    margin: 0 auto;
+    padding-top: 40px;
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    margin-top: 30px;
+    padding-bottom: 50px;
+  }
+  
+  #search__sub .input__sub {
     min-height: 150px;
-}
+  }
+  
+  /* Медиа-запросы для планшетов */
+  @media (max-width: 768px) {
+    .content__cards {
+      grid-template-columns: repeat(2, 1fr); /* 2 колонки вместо 3 */
+    }
+  }
+  
+  /* Медиа-запросы для мобильных телефонов */
+  @media (max-width: 480px) {
+    .content {
+      padding-top: 50px; /* Меньше отступ сверху */
+    }
+  
+    .form-select {
+        width: 100%;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    .content__title {
+      font-size: 11px; /* Меньший размер шрифта */
+    }
+  
+    .content__cards {
+      grid-template-columns: 1fr; /* 1 колонка для карточек */
+      padding-top: 20px; /* Меньше отступ сверху */
+      gap: 20px; /* Меньше промежуток между карточками */
+    }
+  
+    #search__sub .input__sub {
+      min-height: 100px; /* Меньше минимальная высота */
+    }
+  }
+  
+  /* Медиа-запросы для больших экранов, например, настольных компьютеров */
+  @media (min-width: 1241px) {
+    .content {
+      padding-top: 110px; /* Больше отступ сверху */
+    }
+    .form-select {
+        width: 20%;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+  }

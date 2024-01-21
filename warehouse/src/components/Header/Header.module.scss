@@ -6,57 +6,120 @@
     height: 64px;
     background-color: #232F3E;
     color: #FFFFFF;
- 
-    &__wrapper {
-        font-size: 18px;
-        position: relative;
-        max-width: 1240px;
-        height: 100%;
- 
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        margin: 0 auto;
+}
+
+.header__wrapper {
+    font-size: 18px;
+    position: relative;
+    max-width: 1240px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+.header__blocks {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.header__block {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    padding: 0 15px;
+}
+
+.header__logo {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.header__logo:hover {
+    color: #FF9800;
+    box-shadow: 0 0 0 2px white;
+}
+
+.header__profile {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    margin-left: auto;
+}
+
+.btn:focus {
+    outline: none !important;
+    outline-offset: none !important;
+}
+
+.btn:hover {
+    box-shadow: 0 0 0 2px white !important;
+}
+
+@media (max-width: 768px) {
+    .header {
+        height: 56px;
     }
- 
-    &__blocks {
-        display: flex;
-        gap: 50px;
-        margin: 0 auto;
+
+    .header__wrapper {
+        font-size: 16px;
+        padding: 0 20px;
     }
- 
-    &__block {
+
+    .hamburger {
+        display: block;
+    }
+
+    .burger__menu {
+        display: none; // Скрыть бургер-меню по умолчанию
+        z-index: 1001;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%; // Полная ширина для мобильных устройств
+        background-color: #232F3E;
+        flex-direction: column;
+        padding: 10px 0;
+    }
+
+    .burger__menu-item {
+        padding: 10px;
         text-decoration: none;
-        color: inherit;
-        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        transition: background-color .2s ease;
+
+        &:hover {
+            background-color: #3a4a5a;
+        }
     }
- 
-    &__logo {
-        font-weight: bold;
-        text-decoration: none;
-        color: inherit;
-    }
-    
-    &__logo:hover {
-        color: #FF9800;
-        box-shadow: 0 0 0 2px white
-      }
-      
-    &__profile {
-        text-decoration: none;
-        color: inherit;
-        font-weight: bold;
+
+    .header__blocks {
+        display: none; // Скрыть обычные вкладки на мобильных устройствах
     }
 }
- 
-.btn{
-    &:focus {
-        outline: none !important;
-        outline-offset: none !important;
+
+@media (min-width: 769px) {
+    .burger__menu,
+    .hamburger {
+        display: none; // Скрыть бургер-меню и кнопку на компьютерах
     }
-     
-    &:hover {
-        box-shadow: 0 0 0 2px white !important;
-    } 
- }
+
+    .header__blocks {
+        display: flex; // Показать обычные вкладки на компьютерах
+    }
+}
+
+.menuOpen {
+    display: flex; // Показать бургер-меню, когда оно открыто
+}

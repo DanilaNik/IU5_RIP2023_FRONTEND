@@ -1,22 +1,48 @@
 .breadcrumbs {
     margin-bottom: 40px;
     font-size: 16px;
-
-    &__item {
-        display: inline-flex;
-        align-items: center;
-
-        &-link {
-            text-decoration: none;
-            color: #B0BEC5; /* Inactive items color */
-        }
-
-        &-text-active {
-            color: #000; /* Black color for active item */
-        }
-
-        &-icon {
-            margin: 0 10px;
-        }
+  }
+  
+  .breadcrumbs__item {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .breadcrumbs__item-link {
+    text-decoration: none;
+    color: #B0BEC5; /* Inactive items color */
+  }
+  
+  .breadcrumbs__item-text-active {
+    color: #000; /* Black color for active item */
+  }
+  
+  .breadcrumbs__item-icon {
+    margin: 0 10px;
+  }
+  
+  /* Адаптивность для планшетов */
+  @media (max-width: 768px) {
+    .breadcrumbs {
+      margin-bottom: 30px; /* Меньше нижний отступ */
+      font-size: 14px; /* Меньше размер шрифта */
     }
-}
+    .breadcrumbs__item-icon {
+      margin: 0 8px; /* Меньше отступы вокруг иконок */
+    }
+  }
+  
+  /* Адаптивность для мобильных устройств */
+  @media (max-width: 480px) {
+    .breadcrumbs {
+      margin-bottom: 20px; /* Ещё меньше нижний отступ */
+      font-size: 12px; /* Ещё меньше размер шрифта */
+    }
+    .breadcrumbs__item-icon {
+      margin: 0 5px; /* Ещё меньше отступы вокруг иконок */
+    }
+  
+    .breadcrumbs__item {
+      flex-wrap: wrap; /* Если хлебные крошки не умещаются, они перенесутся на новую строку */
+    }
+  }

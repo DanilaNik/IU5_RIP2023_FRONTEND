@@ -1,11 +1,38 @@
-.btn {
-    background-color: '#000';
-    color: '#FFF'; 
-    padding: '15px 30px'; 
-    border-color: "#000";
-    font-size: 18;
-
-    &:hover {
-        color: #FF9800 !important;
+.content {
+    padding-top: 150px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  
+  .content__description {
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  /* Адаптивность для планшетов */
+  @media (max-width: 768px) {
+    .content {
+      padding-top: 100px; /* Уменьшенный верхний отступ */
+      max-width: 90%; /* По ширине устройства с небольшими отступами */
     }
-}
+  
+    .content__description {
+      padding: 20px; /* Больше внутреннего отступа для читаемости */
+    }
+  }
+  
+  /* Адаптивность для мобильных устройств */
+  @media (max-width: 480px) {
+    .content {
+      padding-top: 70px; /* Еще меньше верхний отступ */
+      max-width: 100%; /* По ширине устройства */
+    }
+  
+    .content__description {
+      margin-top: 20px; /* Меньше верхний отступ */
+      padding: 15px; /* Внутренние отступы для удобства чтения на маленьких экранах */
+      border-radius: 5px; /* Меньший радиус скругления */
+    }
+  }

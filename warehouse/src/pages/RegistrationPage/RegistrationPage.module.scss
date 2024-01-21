@@ -1,18 +1,53 @@
 @import '../../styles/variables.scss';
 
+
+
 .content {
-    padding-top: 150px;
-    max-width: 1240px;
-    margin: 0 auto;
+  padding-top: 150px;
+  max-width: 1240px;
+  margin: 0 auto;
 
+  &__title {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  &__link {
+    text-decoration: none;
+    margin-top: 10px;
+  }
+
+  // Adjustments for tablets
+  @media (max-width: 991px) {
+    padding-top: 100px;
     &__title {
-        font-size: 30px;
-        text-align: center;
-        margin-bottom: 30px;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
+  }
 
-    &__link {
-        text-decoration: none;
-        margin-top: 10px;
+  // Adjustments for landscape phones
+  @media (max-width: 767px) {
+    padding-top: 80px;
+    &__title {
+      font-size: 20px;
+      margin-bottom: 15px;
     }
+    &__link {
+      margin-top: 8px;
+    }
+  }
+
+  // Adjustments for portrait phones
+  @media (max-width: 575px) {
+    padding-top: 60px;
+    &__title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    &__link {
+      margin-top: 5px;
+    }
+  }
 }
