@@ -42,6 +42,7 @@ const Header: React.FC = () => {
                     <Link className={styles['burger__menu-item']} to='/orders'>Заявки</Link>
                     {orderID !== 0 && login !== '' && <Link className={styles['burger__menu-item']} to={'/orders/' + orderID}>Текущая заявка</Link>}
                     {login !== '' && <div className={styles['burger__menu-item']} onClick={logout}>Выйти</div>}
+                    {login === '' && <Link to='/registration'><div className={styles['burger__menu-item']}>Войти</div></Link>}
                 </div>
                 
                 <div className={styles.header__blocks}>
@@ -51,9 +52,9 @@ const Header: React.FC = () => {
                     {orderID === 0 && login !== '' && <div style={{color:"#777"}} className={styles.header__block}>Текущая заявка</div>}
                     {login !== '' && <div className={styles.header__block}>{login}</div>}
                     {login !== '' && <Button style={{margin: "10px", backgroundColor:"#232F3E"}} className={styles.btn} onClick={logout}>Выйти</Button>}
+                    {login === '' && <Link to='/registration' className={styles.header__profile}><ProfileIcon/></Link>}
                 </div>
 
-                {login === '' && <Link to='/registration' className={styles.header__profile}><ProfileIcon/></Link>}
             </div>
         </div>
     );
