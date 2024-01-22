@@ -34,9 +34,9 @@ const OrderListPage: React.FC = () => {
 
     const mapStatus = (status: string) => {
         const statusMap = {
-            "formed": "Выполняется",
-            "completed": "Выполнен",
-            "rejected": "Отменен",
+            "formed": "В обработке",
+            "completed": "Принята",
+            "rejected": "Отклонена",
         }
         return statusMap[status]
     };
@@ -133,9 +133,9 @@ const OrderListPage: React.FC = () => {
                                                     }}
                                                     aria-label="Выберите статус" className='mb-3' id='status'>
                                                     <option value="">Выберите статус</option>
-                                                    <option value="formed">Выполняется</option>
-                                                    <option value="completed">Выполнен</option>
-                                                    <option value="rejected">Отменен</option>
+                                                    <option value="formed">В обработке</option>
+                                                    <option value="completed">Принята</option>
+                                                    <option value="rejected">Отклонена</option>
                                                 </Form.Select>
                                             </div>
                                             <div style={{ width: '30%', height: '40px', marginRight: 10}}>
