@@ -14,6 +14,7 @@ const Header: React.FC = () => {
     const [isBurgerMenuOpened, setIsBurgerMenuOpened] = useState(false);
     const login = useSelector((state: RootState) => state.user.login);
     const orderID = useSelector((state: RootState) => state.user.orderID);
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
     const dispatch = useDispatch<AppDispatch>();
 
     const logout = async () => {
@@ -48,8 +49,8 @@ const Header: React.FC = () => {
                 <div className={styles.header__blocks}>
                     <Link className={styles.header__block} to='/'>Комплектующие</Link>
                     {login !== '' && <Link className={styles.header__block} to='/orders'>Заявки</Link>}
-                    {orderID !== 0 && login !== '' && <Link className={styles.header__block} to={'/orders/' + orderID}>Текущая заявка</Link>}
-                    {orderID === 0 && login !== '' && <div style={{color:"#777"}} className={styles.header__block}>Текущая заявка</div>}
+                    {orderID !== 0 && login !== '' && currentPage == 'Главная' && <Link className={styles.header__block} to={'/orders/' + orderID}>Текущая заявка</Link>}
+                    {orderID === 0 && login !== '' && currentPage == 'Главная' && <div style={{color:"#777"}} className={styles.header__block}>Текущая заявка</div>}
                     {login !== '' && <div className={styles.header__block}>{login}</div>}
                     {login !== '' && <Button style={{margin: "10px", backgroundColor:"#232F3E"}} className={styles.btn} onClick={logout}>Выйти</Button>}
                     {login === '' && <Link to='/registration' className={styles.header__profile}><ProfileIcon/></Link>}

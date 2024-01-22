@@ -10,9 +10,13 @@ import { mockItems } from '../../../consts'
 import { api } from '../../api';
 import { GithubComDanilaNikIU5RIP2023InternalHttpmodelsRequest, GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetRequestsForAdminWithFiltersResponse, GithubComDanilaNikIU5RIP2023InternalHttpmodelsUserRequest } from '../../api/Api';
 import { Button, Form, Table } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../components/state/state';
+import { setCurrentPage } from '../../components/state/user/user';
 
 
 const OrderListPage: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
     //const {id} = useParams();
     //const [order, setOrder] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsUserRequest>()
     const [orders, setOrders] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetRequestsForAdminWithFiltersResponse>()
@@ -20,6 +24,7 @@ const OrderListPage: React.FC = () => {
         new Map<string, string>([['Домашняя страница', '/']])
     );
 
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
 
 
     const navigate = useNavigate();
@@ -38,6 +43,7 @@ const OrderListPage: React.FC = () => {
     }
 
     const getOrderList = async () => {
+        dispatch(setCurrentPage('Заявки'))
         const { data } = await api.orders.ordersList({},{
             withCredentials: true,
         })

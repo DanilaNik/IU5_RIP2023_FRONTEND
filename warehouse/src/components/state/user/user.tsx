@@ -9,6 +9,7 @@ interface UserState {
     orderID: number,
     title: string,
     material: string,
+    currentPage: string,
 }
 
 const initialState: UserState = {
@@ -20,6 +21,7 @@ const initialState: UserState = {
     orderID: 0,
     title: '',
     material: '',
+    currentPage: '',
 }
 
 const userSlice = createSlice({
@@ -50,6 +52,9 @@ const userSlice = createSlice({
         setMaterial: (state, value: PayloadAction<string>) => {
             state.material = value.payload
         },
+        setCurrentPage: (state, value: PayloadAction<string>) => {
+            state.currentPage = value.payload
+        },
     }
 })
 
@@ -62,6 +67,7 @@ export const {
     setOrderID,
     setTitle,
     setMaterial,
+    setCurrentPage,
 } = userSlice.actions
 
 export default userSlice.reducer

@@ -8,7 +8,7 @@ import { api } from '../../api';
 import { useState } from 'react';
 import { AppDispatch, RootState } from '../../components/state/state';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmail, setId, setLogin, setName, setRole,  } from '../../components/state/user/user';
+import { setCurrentPage, setEmail, setId, setLogin, setName, setRole,  } from '../../components/state/user/user';
 
 
 
@@ -19,6 +19,9 @@ const LoginPage: React.FC = () => {
     const navigate = useNavigate()
     const [login, setUserLogin] = useState("")
     const [password, setPassword] = useState("")
+
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
+    dispatch(setCurrentPage('Регистрация'))
 
     const handleFormSubmit = async(event) => {
         event.preventDefault()

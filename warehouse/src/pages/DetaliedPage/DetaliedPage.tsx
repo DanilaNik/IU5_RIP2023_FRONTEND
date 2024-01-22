@@ -8,6 +8,9 @@ import { useParams } from 'react-router-dom';
 
 import { mockItems } from '../../../consts'
 import { api } from '../../api';
+import { setCurrentPage } from '../../components/state/user/user';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../components/state/state';
 
 type Item = {
     id: number;
@@ -36,6 +39,7 @@ export type ReceivedItemData = {
 
 
 const MainPage: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
     const {id} = useParams();
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
         new Map<string, string>([['Домашняя страница', '/'], ['Комплектующие', '/']])
@@ -44,6 +48,7 @@ const MainPage: React.FC = () => {
     const [item, setItem] = useState<Item>();
 //доп информация
     const getItem = async () => {
+        dispatch(setCurrentPage('Детали услуги'))
         try {
             //const response = await fetch(`http://172.20.10.6:8080/items/${id}`);
            // const data = await response.json();

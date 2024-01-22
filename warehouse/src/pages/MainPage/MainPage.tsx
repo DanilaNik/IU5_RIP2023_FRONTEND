@@ -10,7 +10,7 @@ import BreadCrumbs from '../../components/BreadCrumbs';
 import SearchIcon from '../../components/Icons/SearchIcon'
 import { mockItems } from '../../../consts';
 import { api } from '../../api';
-import { setMaterial, setOrderID, setTitle } from '../../components/state/user/user';
+import { setCurrentPage, setMaterial, setOrderID, setTitle } from '../../components/state/user/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../components/state/state';
 
@@ -45,6 +45,8 @@ const MainPage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const title = useSelector((state: RootState) => state.user.title)
     const material = useSelector((state: RootState) => state.user.material)
+
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
     
     const [items, setItems] = useState<Item[]>([]);
     const linksMap = new Map<string, string>([
@@ -53,6 +55,7 @@ const MainPage: React.FC = () => {
     ]);
 //запрос на главной 
     const getItems = async () => {
+        dispatch(setCurrentPage('Главная'))
         try {
             const { data } = await api.items.itemsList({
                 title: title,

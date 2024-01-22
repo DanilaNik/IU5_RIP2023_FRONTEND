@@ -6,13 +6,20 @@ import Header from '../../components/Header';
 import styles from './RegistrationPage.module.scss'
 import { useState } from 'react';
 import { api } from '../../api';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../components/state/state';
+import { setCurrentPage } from '../../components/state/user/user';
 
 const MainPage: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
     const [login, setLogin] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [userName, setUserName] = useState("")
+
+    const currentPage = useSelector((state: RootState) => state.user.currentPage)
+    dispatch(setCurrentPage('Регистрация'))
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
