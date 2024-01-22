@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../state/state';
 import { Button } from 'react-bootstrap';
 import { api } from '../../api';
-import { setLogin, setName, setId, setRole, setEmail, setCurrentPage, setOrderID, setTitle, setMaterial, setOrderStatus, setMinDate, setMaxDate, setOrderEmail } from '../state/user/user';
+import { setLogin, setName, setId, setRole, setEmail, setCurrentPage, setOrderID, setTitle, setMaterial, setOrderStatus, setMinDate, setMaxDate, setOrderEmail, setEditTitle } from '../state/user/user';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -34,6 +34,7 @@ const Header: React.FC = () => {
         dispatch(setMinDate(''))
         dispatch(setMaxDate(''))
         dispatch(setOrderEmail(''))
+        dispatch(setEditTitle(''))
 
         navigate("/")
         window.location.reload();
