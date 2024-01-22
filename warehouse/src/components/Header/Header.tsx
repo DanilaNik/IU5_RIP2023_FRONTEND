@@ -53,10 +53,10 @@ const Header: React.FC = () => {
                         login != '' && role == 'Admin' && <Link className={styles.header__block} to='/items/edit'>Редактировать комплектующие</Link>
                     }
                     {
-                        orderID != 0 && login != '' && currentPage != 'Текущая заявка' && <Link className={styles.header__block} onClick={() => {dispatch(setCurrentPage('Текущая заявка'))}} to={'/orders/' + orderID}>Текущая заявка</Link>  
+                        orderID != 0 && login != '' && currentPage == 'Главная' && <Link className={styles.header__block} onClick={() => {dispatch(setCurrentPage('Текущая заявка'))}} to={'/orders/' + orderID}>Текущая заявка</Link>  
                     }
                     {
-                        orderID == 0 && login != '' && currentPage != 'Текущая заявка' && <div style={{color:"#777"}}  className={styles.header__block}>Текущая заявка</div>
+                        orderID == 0 && login != '' && currentPage == 'Главная' && <div style={{color:"#777"}}  className={styles.header__block}>Текущая заявка</div>
                     }
                 </div>
 

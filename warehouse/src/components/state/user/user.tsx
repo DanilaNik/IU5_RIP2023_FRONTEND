@@ -14,6 +14,7 @@ interface UserState {
     minDate: string,
     maxDate: string,
     orderEmail: string,
+    editTitle: string,
 }
 
 const initialState: UserState = {
@@ -30,6 +31,7 @@ const initialState: UserState = {
     minDate: '',
     maxDate: '',
     orderEmail: '',
+    editTitle: '',
 }
 
 const userSlice = createSlice({
@@ -75,6 +77,9 @@ const userSlice = createSlice({
         setOrderEmail: (state, value: PayloadAction<string>) => {
             state.orderEmail = value.payload
         },
+        setEditTitle: (state, value: PayloadAction<string>) => {
+            state.editTitle = value.payload
+        },
     }
 })
 
@@ -92,6 +97,7 @@ export const {
     setMinDate,
     setMaxDate,
     setOrderEmail,
+    setEditTitle,
 } = userSlice.actions
 
 export default userSlice.reducer

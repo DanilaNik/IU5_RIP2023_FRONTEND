@@ -42,7 +42,9 @@ const OrderListPage: React.FC = () => {
     };
 
     const formatDate = (date: string) => {
-        return date.substring(0, 10);
+        const timeStartIndex = date.indexOf('T') + 1;
+        let result = date.substring(0, 10) + " " + date.substring(timeStartIndex, timeStartIndex + 8)
+        return result;
     }
 
     const getOrderList = async () => {
@@ -175,12 +177,12 @@ const OrderListPage: React.FC = () => {
                                 <td>{mapStatus(String(request.status))}</td>
                                 <td style={{display: 'flex', gap: '10px'}}>
                                     <Link to={"/orders/" + request.id}><Button className="noOutline" style={{backgroundColor: "#232F3E", borderColor: "#000"}}>Подробнее</Button></Link>
-                                    {role == 'Admin' && request.status != 'completed' &&
+                                    {role == 'Admin' && request.status != 'completed' && request.status != 'rejected' &&
                                         <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', borderColor: "green"}} className="noOutline bg-success d-flex justify-content-center align-items-center" onClick={() => {approveOrder(Number(request.id))}}>
                                             <PositiveIcon />
                                         </Button>
                                     }
-                                    {role == 'Admin' && request.status != 'completed' &&       
+                                    {role == 'Admin' && request.status != 'completed' && request.status != 'rejected' &&       
                                         <Button style={{width: '30px', height: '30px', borderRadius: '15px', padding: '5px', borderColor: "red"}} className="noOutline bg-danger d-flex justify-content-center align-items-center" onClick={() => {deleteOrder(Number(request.id))}}>
                                             <NegativeIcon />
                                         </Button>

@@ -11,13 +11,13 @@ import { GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetItemsResponse }
 import { Button, Form, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../components/state/state';
-import { setCurrentPage, setTitle } from '../../components/state/user/user';
+import { setCurrentPage, setEditTitle, setTitle } from '../../components/state/user/user';
 import PlusIcon from '../../components/Icons/PlusIcon';
 
 const ItemListPage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const role = useSelector((state: RootState) => state.user.role)
-    const title = useSelector((state: RootState) => state.user.title)
+    const editTitle = useSelector((state: RootState) => state.user.editTitle)
     const [items, setItems] = useState<GithubComDanilaNikIU5RIP2023InternalHttpmodelsTestingGetItemsResponse>();
     
     const [linksMap, setLinksMap] = useState<Map<string, string>>(
@@ -30,7 +30,7 @@ const ItemListPage: React.FC = () => {
         dispatch(setCurrentPage('Редактировать комплектующие'))
 
         const { data } = await api.items.itemsList({
-            title: title,
+            title: editTitle,
         },{
             withCredentials: true,
         })
@@ -84,7 +84,7 @@ const ItemListPage: React.FC = () => {
                                 <Form className="d-flex gap-3" onSubmit={handleFormSubmit}>
                                     <div className='w-100'>
                                     <Form.Group style={{height: 60}} className='w-100 mb-3' controlId="search__sub.input__sub">
-                                        <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 16}} value={title} onChange={e => {dispatch(setTitle(e.target.value))}} type="text" placeholder="Введите название ..." />
+                                        <Form.Control style={{height: '100%', borderColor: '#3D348B', fontSize: 16}} value={editTitle} onChange={e => {dispatch(setEditTitle(e.target.value))}} type="text" placeholder="Введите название ..." />
                                     </Form.Group>
                                     </div>
 

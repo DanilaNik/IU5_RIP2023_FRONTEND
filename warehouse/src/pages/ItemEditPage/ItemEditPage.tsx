@@ -115,7 +115,7 @@ const ItemEditPage: React.FC = () => {
             let convertLink = ":" + img_link.port + img_link.pathname
             currentItem.image_url = convertLink
             setCurrentItem(currentItem)
-          return
+            return
         }
         const { data } = await api.items.imageCreate({
           file: imageFile,

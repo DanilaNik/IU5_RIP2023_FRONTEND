@@ -25,6 +25,7 @@ const ItemCreatePage: React.FC = () => {
     const [depth, setDepth] = useState(currentItem?.depth);
     const [barcode, setBarcode] = useState(currentItem?.barcode);
     const [img, setImg] = useState(currentItem?.image_url);
+    const [error, setError] = useState('');
     
     const navigate = useNavigate();
     const { id } = useParams()
@@ -159,15 +160,23 @@ const ItemCreatePage: React.FC = () => {
                                 pattern="[0-9]{13}"
                                 title="Код должен состоять из 13 цифр"
                                 value={barcode}
+                                maxLength={13}
+                                style={{borderColor: error ? 'red' : ''}}
+                                onKeyPress={(e) => {
+                                    if (!/[0-9]/.test(e.key)) {
+                                        e.preventDefault();
+                                    }
+                                }}
                                 onChange={(e) => {
                                     const value = e.target.value;
                                     if (value.length <= 13) {
                                         currentItem.barcode = Number(value);
                                         setCurrentItem(currentItem);
                                         setBarcode(currentItem?.barcode);
+                                        setError('');
                                     }else {
-                                        alert("Код должен состоять из 13 цифр");
-                                      }
+                                        setError("Код должен состоять из 13 цифр");
+                                    }
                                 }}
                             />
                             </Form.Group>
