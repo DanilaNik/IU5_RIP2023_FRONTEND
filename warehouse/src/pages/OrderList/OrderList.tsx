@@ -155,7 +155,7 @@ const OrderListPage: React.FC = () => {
                     <Table bordered hover responsive="md" className="table w-100">
                         <thead>
                             <tr>
-                            <th>№ заказа</th>
+                            <th>№ заявки</th>
                             {role == "Admin" && <th>Email</th>}
                             {role == "Admin" && <th>ID админа</th>}
                             <th>Дата формирования</th>
