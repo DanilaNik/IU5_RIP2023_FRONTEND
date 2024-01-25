@@ -491,11 +491,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
          * @format text
          */
         status?: string;
-        /**
-         * order creator
-         * @format text
-         */
-        login?: string;
       },
       params: RequestParams = {},
     ) =>
